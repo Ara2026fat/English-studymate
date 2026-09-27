@@ -33,12 +33,14 @@
   --ok:#2DD4BF; --ok-soft:rgba(45,212,191,.14);
   --bad:#FF7A7A; --bad-soft:rgba(255,122,122,.14);
 
-  /* الأزرقة/الكهرمان/البنفسج — ثلاث هويات لونية للدفاتر الثلاثة، كل واحد يعمل كـ --glow خاص بقسمه */
   --c-letters:#E3A548; --c-letters-tint:rgba(227,165,72,.16);
   --c-tenses:#6FB3E6;  --c-tenses-tint:rgba(111,179,230,.16);
   --c-translate:#B58FE0; --c-translate-tint:rgba(181,143,224,.16);
+  --c-home:#4FBF95; --c-home-tint:rgba(79,191,149,.16);
+  --c-free:#E07A93; --c-free-tint:rgba(224,122,147,.16);
+  --c-report:#4FBF95; --c-report-tint:rgba(79,191,149,.16);
 
-  --glow:var(--c-tenses); --glow-tint:var(--c-tenses-tint);
+  --glow:var(--c-home); --glow-tint:var(--c-home-tint);
   --btn-bg:color-mix(in srgb, var(--glow) 18%, transparent);
   --btn-line:color-mix(in srgb, var(--glow) 34%, transparent);
   --btn-ink:color-mix(in srgb, var(--glow) 78%, white);
@@ -47,8 +49,7 @@
   --body:"Markazi Text",Tahoma,sans-serif;
   padding-top:env(safe-area-inset-top,0px);
 }
-/* سمة نهارية اختيارية — تُفعَّل تلقائيًا حين يفضّل جهاز الطالب الوضع الفاتح */
-/* سمة نهارية اختيارية — احتياطية فقط، لا تُفعَّل تلقائيًا (الزجاج يحتاج خلفية داكنة ليبدو بجماله) */
+/* الوضع النهاري */
 :root[data-theme="light"]{
     --void:#FBF6EC; --lift1:#FFFFFF; --lift2:#F2ECDD;
     --ink:#2B2620; --ink-soft:#6B6255; --ink-faint:#948C7C;
@@ -60,7 +61,33 @@
     --solid:#FFFFFF;
     --ok:#1F9E7E; --ok-soft:rgba(31,158,126,.12);
     --bad:#C4453A; --bad-soft:rgba(196,69,58,.10);
-  }
+}
+/* الوضع الكحلي المضيء */
+:root[data-theme="navy"]{
+    --void:#0A1130; --lift1:#141B3D; --lift2:#0F1530;
+    --ink:#DCE6FA; --ink-soft:#8FA3D6; --ink-faint:#5A6BA0;
+    --glass:linear-gradient(158deg, rgba(140,180,255,.11), rgba(140,180,255,.03));
+    --glass-line:rgba(140,180,255,.18);
+    --glass-shadow:0 18px 46px rgba(20,40,120,.55);
+    --edge:rgba(170,205,255,.45);
+    --flat:rgba(140,180,255,.055); --flat-line:rgba(140,180,255,.11); --line:rgba(140,180,255,.13);
+    --solid:#141B3D;
+    --ok:#3ED6C4; --ok-soft:rgba(62,214,196,.16);
+    --bad:#FF7F93; --bad-soft:rgba(255,127,147,.16);
+}
+/* الوضع الكهرماني */
+:root[data-theme="amber"]{
+    --void:#1A130A; --lift1:#241B0F; --lift2:#1F160C;
+    --ink:#F0E4CE; --ink-soft:#C2A87E; --ink-faint:#8A7350;
+    --glass:linear-gradient(158deg, rgba(255,190,100,.11), rgba(255,190,100,.03));
+    --glass-line:rgba(255,190,100,.2);
+    --glass-shadow:0 18px 46px rgba(80,50,10,.5);
+    --edge:rgba(255,212,145,.45);
+    --flat:rgba(255,190,100,.055); --flat-line:rgba(255,190,100,.11); --line:rgba(255,190,100,.13);
+    --solid:#241B0F;
+    --ok:#8FD65A; --ok-soft:rgba(143,214,90,.16);
+    --bad:#FF7A6E; --bad-soft:rgba(255,122,110,.16);
+}
 *{box-sizing:border-box; margin:0; padding:0;}
 html,body{height:100%;}
 body{
@@ -68,8 +95,8 @@ body{
   font-size:19px; line-height:1.55; height:100%; display:flex; flex-direction:column; overflow:hidden;
 }
 .en{ font-family:"Space Mono",monospace; direction:ltr; unicode-bidi:isolate; font-variant-numeric:tabular-nums; }
+body[data-lang="en"] .notebook{ text-align:left; }
 
-/* ---- persistent header (سطح مسطّح، بلا ظلّ) ---- */
 .appbar{
   flex:none; display:flex; align-items:center; justify-content:space-between;
   padding:calc(env(safe-area-inset-top,0px) + 14px) 18px 12px;
@@ -79,29 +106,34 @@ body{
 .title-block{ display:flex; flex-direction:column; gap:1px; }
 .brand-sub{ font-size:11px; color:var(--ink-faint); letter-spacing:.02em; }
 .appbar .dot{ width:11px; height:11px; border-radius:50%; background:var(--glow); box-shadow:0 0 10px var(--glow-tint); transition:background .16s ease, box-shadow .16s ease; }
-.appbar .right{ display:flex; align-items:center; gap:12px; }
-.theme-toggle{
-  width:34px; height:34px; border-radius:10px; border:1px solid var(--flat-line); background:var(--flat);
-  color:var(--ink-soft); font-size:16px; display:flex; align-items:center; justify-content:center; cursor:pointer;
+.appbar .right{ display:flex; align-items:center; gap:10px; }
+.theme-toggle, .lang-toggle{
+  height:34px; min-width:34px; border-radius:10px; border:1px solid var(--flat-line); background:var(--flat);
+  color:var(--ink-soft); font-size:15px; display:flex; align-items:center; justify-content:center; cursor:pointer; padding:0 9px;
+  font-family:var(--display); font-weight:700;
 }
-.theme-toggle:active{ transform:scale(.94); }
+.theme-toggle:active, .lang-toggle:active{ transform:scale(.94); }
 
-/* ---- content area ---- */
 .content{ flex:1; overflow-y:auto; padding:16px 16px 90px; }
 .content .inner{ max-width:640px; margin:0 auto; }
 
-/* ---- bottom tab bar (مسطّح، الحالة النشطة بلون هوية القسم) ---- */
 .tabbar{ flex:none; display:flex; background:var(--lift2); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom,0px); }
 .tab{
   flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
   padding:10px 4px 8px; background:none; border:none; cursor:pointer; color:var(--ink-faint);
-  font-family:var(--body); font-size:14px; position:relative; transition:color .16s ease;
+  font-family:var(--body); font-size:13.5px; position:relative; transition:color .16s ease;
 }
-.tab .ic{ font-size:22px; line-height:1; }
+.tab .ic{ font-size:21px; line-height:1; }
 .tab.active{ color:var(--tab-color); }
 .tab.active::before{ content:""; position:absolute; top:0; left:20%; right:20%; height:3px; border-radius:0 0 4px 4px; background:var(--tab-color); box-shadow:0 0 8px var(--tab-color); }
-.tab.locked{ opacity:.45; }
 .tab:focus-visible{ outline:2px solid var(--glow); outline-offset:-2px; }
+
+.subtabs{ display:flex; gap:8px; margin-bottom:16px; }
+.subtab{ flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:9px 4px; border-radius:12px;
+  background:var(--flat); border:1px solid var(--flat-line); color:var(--ink-faint); font-size:12.5px; cursor:pointer; }
+.subtab .ic{ font-size:18px; }
+.subtab.active{ background:var(--sc-tint); border-color:var(--sc); color:var(--sc); font-weight:700; }
+.subtab.locked{ opacity:.45; }
 
 .nudge-toast{
   position:fixed; bottom:96px; left:50%; transform:translateX(-50%);
@@ -109,6 +141,14 @@ body{
   padding:12px 18px; border-radius:14px; font-size:15px; box-shadow:var(--glass-shadow);
   z-index:50; max-width:88vw; text-align:center;
 }
+.action-banner{
+  position:fixed; bottom:0; left:0; right:0; z-index:60;
+  background:var(--solid); border-top:1px solid var(--glass-line); box-shadow:0 -8px 28px rgba(0,0,0,.3);
+  padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px)); display:flex; align-items:center; gap:12px;
+}
+.action-banner .txt{ flex:1; font-size:15px; color:var(--ink); }
+.action-banner .btn{ width:auto; padding:11px 16px; font-size:14.5px; white-space:nowrap; }
+.action-banner .x{ background:none; border:none; color:var(--ink-faint); font-size:20px; cursor:pointer; padding:4px 6px; }
 .subbar{ margin-bottom:10px; }
 .subbar .t{ font-size:15px; color:var(--ink-soft); }
 .step-nav{ display:flex; gap:10px; margin-top:14px; }
@@ -119,8 +159,6 @@ body{
 .step-dot.past{ background:var(--ok); }
 .progress-row{ display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:12px; font-size:13.5px; color:var(--ink-faint); }
 
-/* ==================== النظام الزجاجي (سرّ اللمعان) ==================== */
-/* زجاج واحد في الشاشة — البطاقة الرئيسة/اللحظة الحالية */
 .hero{
   background:var(--glass); border:1px solid var(--glass-line); border-radius:26px;
   box-shadow:var(--glass-shadow); padding:22px 20px; position:relative; margin-bottom:18px;
@@ -130,7 +168,6 @@ body{
 .hero h2{ font-family:var(--display); font-size:22px; font-weight:700; margin-bottom:6px; }
 .hero p{ color:var(--ink-soft); font-size:15.5px; }
 
-/* مسطّح — بلا ظلّ، للبطاقات الثانوية */
 .card{ background:var(--flat); border:1px solid var(--flat-line); border-radius:16px; padding:18px; margin-bottom:14px; position:relative; }
 .card.glass{ background:var(--glass); border-color:var(--glass-line); box-shadow:var(--glass-shadow); }
 .card.glass::before{ content:''; position:absolute; inset:0 14% auto; height:1px; border-radius:1px;
@@ -145,11 +182,11 @@ body{
   border-radius:16px; padding:16px 18px; margin-bottom:12px; cursor:pointer;
   border-inline-start:3px solid var(--glow); transition:background .16s ease;
 }
-.notebook h3{ font-family:var(--display); font-size:20px; font-weight:700; margin-bottom:3px; }
+.notebook h3{ font-family:var(--display); font-size:20px; font-weight:700; margin-bottom:3px; display:flex; align-items:center; gap:8px;}
 .notebook p{ color:var(--ink-soft); font-size:15px; }
 .notebook .prog{ margin-top:8px; font-size:13.5px; color:var(--glow); font-weight:700; }
+.notebook .rec{ display:inline-block; margin-top:7px; font-size:12px; color:var(--ok); background:var(--ok-soft); padding:3px 9px; border-radius:999px; }
 
-/* ---- أزرار: مشتقّة من لون الهوية ---- */
 .btn{
   display:block; width:100%; background:var(--btn-bg); border:1px solid var(--btn-line); color:var(--btn-ink);
   padding:17px; border-radius:15px; font-family:var(--display); font-size:16px; font-weight:600;
@@ -160,7 +197,6 @@ body{
 .btn.ghost{ background:transparent; border-color:transparent; color:var(--ink-soft); font-size:14px; padding:13px; font-family:var(--body); }
 .btn[disabled]{ opacity:.5; }
 
-/* ---- خيارات الاختيار: تترقّى من مسطّح إلى زجاج عند الصحة ---- */
 .q-text{ font-size:19px; margin-bottom:12px; }
 .choices{ display:flex; flex-direction:column; gap:9px; }
 .choice{
@@ -169,6 +205,7 @@ body{
   font-family:"Space Mono",monospace; font-size:16.5px; cursor:pointer; direction:ltr;
   transition:border-color .16s ease, background .16s ease;
 }
+.choice.ar{ font-family:var(--body); direction:rtl; text-align:right; }
 .choice.correct{ background:var(--glass); border-color:var(--ok); color:var(--ok); font-weight:700; box-shadow:var(--glass-shadow); }
 .choice.wrong{ background:var(--bad-soft); border-color:var(--bad); color:var(--bad); text-decoration:line-through; }
 .choice[disabled]{ cursor:default; }
@@ -192,6 +229,17 @@ body{
 .type-row{ display:flex; gap:8px; margin-top:9px; }
 .type-input{ flex:1; padding:11px 12px; border-radius:10px; border:1px solid var(--flat-line); background:var(--flat); color:var(--ink); font-family:"Space Mono",monospace; font-size:16.5px; direction:ltr; }
 
+.field-label{ font-size:13.5px; color:var(--ink-soft); margin-bottom:6px; display:block; }
+.field-row{ display:flex; gap:8px; margin-bottom:14px; }
+.field-input{ flex:1; padding:13px 14px; border-radius:12px; border:1px solid var(--flat-line); background:var(--flat); color:var(--ink); font-family:var(--body); font-size:16px; }
+.field-input.en{ direction:ltr; text-align:left; }
+.field-btn{ padding:0 18px; border-radius:12px; border:1px solid var(--btn-line); background:var(--btn-bg); color:var(--btn-ink); font-family:var(--display); font-weight:700; cursor:pointer; }
+
+.speak-btn{ display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:22px; border-radius:16px;
+  background:var(--glow-tint); border:1px solid var(--glow); color:var(--glow); font-family:var(--display); font-size:19px; font-weight:700; cursor:pointer; margin-bottom:14px; }
+.speak-btn:active{ transform:scale(.98); }
+.replay{ text-align:center; font-size:13.5px; color:var(--ink-faint); margin-bottom:12px; cursor:pointer; }
+
 .letters-row{ display:flex; flex-wrap:wrap; gap:9px; justify-content:center; margin:12px 0; direction:ltr; }
 .letter-box{
   width:50px; height:50px; border-radius:12px; border:1px solid var(--flat-line); background:var(--flat);
@@ -209,15 +257,23 @@ body{
 .done-banner::before{ content:''; position:absolute; inset:0 14% auto; height:1px; background:linear-gradient(90deg,transparent,var(--edge),transparent); }
 .done-banner h3{ color:var(--glow); font-family:var(--display); font-size:21px; margin-bottom:6px; }
 
+.report-row{ display:flex; justify-content:space-between; align-items:center; background:var(--flat); border:1px solid var(--flat-line); border-radius:13px; padding:13px 15px; margin-bottom:9px; }
+.report-row .rt{ font-size:15px; }
+.report-row .rd{ font-size:12px; color:var(--ink-faint); margin-top:2px; }
+.report-row .rs{ font-family:"Space Mono",monospace; font-size:16px; color:var(--glow); font-weight:700; }
+.total-card{ text-align:center; padding:20px; }
+.total-card .big{ font-family:"Space Mono",monospace; font-size:34px; font-weight:700; color:var(--glow); }
+
 .footer-credit{ text-align:center; font-size:13px; color:var(--ink-faint); margin-top:26px; line-height:1.8; }
 [hidden]{ display:none !important; }
 </style>
 </head>
 <body>
 <div class="appbar">
-  <div class="title-block"><h1>رفيق الإنجليزية</h1><span class="brand-sub en">English StudyMate</span></div>
+  <div class="title-block" id="titleBlock"></div>
   <div class="right">
-    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" aria-label="تبديل المظهر"></button>
+    <button class="theme-toggle" id="settingsBtn" onclick="openSettings()" aria-label="الإعدادات">⚙</button>
+    <button class="theme-toggle" id="themeBtn" onclick="quickToggleTheme()" aria-label="تبديل المظهر"></button>
     <span class="dot" id="accentDot"></span>
   </div>
 </div>
@@ -226,30 +282,210 @@ body{
 
 <script>
 /* =========================================================================
-   رفيق الإنجليزية — أداة مستقلة أحادية الملف، بلا اتصال، بلا خادم.
-   كل الأمثلة والتمارين هنا من تأليفنا نحن بالكامل: مستوحاة من فكرة
-   "اربط الأزمنة" و"دفاتر الترجمة المتدرجة" و"تأسيس الحروف للمبتدئين" —
-   وهي أفكار تدريسية عامة لا نص أحد — تكريمًا للأستاذ حسام عبدالله الذي بنى
-   الفكرة الأصلية، ولم يُستخدم من نصّه هنا حرف واحد.
+   رفيق الإنجليزية — نسخة تجريبية موسّعة. كل الجمل والكلمات والنصوص هنا من
+   تأليفنا بالكامل: مستوحاة من أفكار تدريسية عامة لا من نصوص أحد الحرفية.
+   الأصوات تُنتَج آليًا من متصفح الطالب (لا ملفات صوت).
    ========================================================================= */
 
-const LS_KEY = "eng_companion_v1";
+const LS_KEY = "eng_companion_v2";
 function loadState(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }catch(e){ return {}; } }
 function saveState(s){ try{ localStorage.setItem(LS_KEY, JSON.stringify(s)); }catch(e){} }
 let STATE = loadState();
 STATE.done = STATE.done || {};
 STATE.scores = STATE.scores || {};
-if(STATE.theme) document.documentElement.setAttribute("data-theme", STATE.theme);
-function toggleTheme(){
-  const now = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
-  document.documentElement.setAttribute("data-theme", now);
-  STATE.theme = now; saveState(STATE);
-  updateThemeBtn();
+STATE.reports = STATE.reports || [];
+STATE.lang = STATE.lang || "ar";
+
+/* ------------------------------ Themes -------------------------------- */
+const THEMES = ["dark","light","navy","amber"];
+const THEME_ICON = {dark:"☾", light:"☀", navy:"🔷", amber:"🔶"};
+function applyTheme(t){ document.documentElement.setAttribute("data-theme", t); STATE.theme=t; saveState(STATE); updateThemeBtn(); }
+function quickToggleTheme(){ const cur = STATE.theme||"dark"; applyTheme(cur==="light" ? "dark" : "light"); }
+function updateThemeBtn(){ const b=document.getElementById("themeBtn"); if(b) b.textContent = (STATE.theme||"dark")==="light" ? "☾" : "☀"; }
+document.documentElement.setAttribute("data-theme", STATE.theme||"dark");
+
+/* ---------------------------- Language / i18n --------------------------- */
+const STR = {
+  ar:{
+    appTitle:"رفيق الإنجليزية", appSub:"English StudyMate",
+    tabHome:"الرئيسية", tabFoundation:"المسار التأسيسي", tabFree:"تدريب حر", tabReport:"تقريري",
+    subLetters:"الحروف", subTenses:"الأزمنة", subTranslate:"الترجمة",
+    home_hello:"مرحبًا 👋", home_sub:"رفيق الإنجليزية — تدرّب بالطريقة التي تناسبك.",
+    home_name_label:"اسمك", home_name_ph:"اكتب اسمك هنا",
+    home_stage_label:"مرحلتك الدراسية", stage_middle:"متوسط", stage_high:"ثانوي", stage_uni:"جامعي",
+    home_code_label:"عندك كود مهمة من معلمك؟", home_code_ph:"مثال: GRAMMAR", enter_btn:"دخول",
+    home_card1_title:"🧭 ابدأ من الصفر", home_card1_desc:"مسار موجّه: الحروف ← الأزمنة ← الترجمة، خطوة بخطوة.",
+    home_card2_title:"🎯 درّبني على مهارة معيّنة", home_card2_desc:"اختر مباشرة: قواعد، قراءة، استماع، فونكس أو مفردات.",
+    home_footer:"بالتعاون مع المعلم الفاضل الأستاذ حسام عبدالله في المنهجية التدريسية",
+    settings_title:"⚙ الإعدادات", settings_lang_label:"لغة الواجهة", settings_theme_label:"الألوان",
+    theme_dark:"الليلي", theme_light:"النهاري", theme_navy:"الكحلي المضيء", theme_amber:"الكهرماني",
+    settings_credits_title:"الحقوق", settings_credits_line2:"بالتعاون مع المعلم الفاضل الأستاذ حسام عبدالله في المنهجية التدريسية",
+    back_word:"← رجوع",
+    install_title:"ثبّت رفيق الإنجليزية على جهازك", install_btn:"تثبيت الآن", install_dismiss:"لاحقًا",
+    unknown_code:"كود غير معروف — تأكد منه مع معلمك", code_unlocked:"تم فتح المهمة ✅",
+
+    letters_title:"✎ دفتر الحروف", letters_sub:"تأسيس القراءة والكتابة لمن يبدأ من الصفر.",
+    letters_exercise:"تمرين", of_word:"من",
+    letters_instr_match:"اضغط الحرف الكبير ثم صغيره بنفس الترتيب",
+    letters_instr_odd:"اضغط الحرف المختلف عن البقية",
+    letters_done_title:"أنهيت دفتر الحروف 🎉", letters_done_sub:"جرّب الآن دفتر الأزمنة أعلى الشاشة.",
+    redo_btn:"أعِد التمرين", correct_fb:"صحيح!", wrong_fb:"حاول مرة أخرى.",
+    odd_correct_fb:"صحيح! هذا هو الحرف المختلف.", odd_wrong_fb:"غير صحيح، الحرف الصحيح مُلوّن الآن.",
+    lock_prefix:"أنهِ دفتر «", lock_suffix:"» أولًا حتى يفتح هذا الدفتر",
+
+    grammar_title:"⏳ القواعد — الأزمنة", step_word:"الخطوة", link_step_suffix:"— مبدأ ربط الأزمنة",
+    prev_btn:"السابق", next_btn:"التالي", start_link_quiz:"ابدأ تمرين الربط (", questions_word:"سؤال)",
+    link_quiz_header:"تمرين الربط — سؤال", correct_so_far:"الصحيح حتى الآن:",
+    quiz_done_title:"انتهى التمرين 🎉", scored_word:"حصلت على", out_of_word:"من",
+    share_result_btn:"📤 شارك النتيجة مع المعلم", review_from_start:"مراجعة الدرس من البداية",
+
+    vocab_title:"⇄ المفردات والترجمة", level_intro:"مستويان متدرجان: أساسي ثم متقدم.",
+    level1_title:"المستوى الأول — تأسيسي", level1_desc:"مفردات يومية وجمل بسيطة: it is / there is / I have",
+    level2_title:"المستوى الثاني — متقدم", level2_desc:"المقارنة، والأفعال الناقصة، والضمائر، وحروف الجر",
+    level1_first_note:"أنهِ المستوى الأول أولًا حتى يفتح هذا المستوى", locked_prefix:"🔒 ",
+    pill_vocab:"مفردات", pill_sentences:"جمل ترجمة",
+    flash_hint:"اضغط لرؤية المعنى", vocab_done:"أنهيت كل البطاقات 🎉", start_sentences:"ابدأ جمل الترجمة",
+    level_done_title:"أنهيت هذا المستوى 🎉", translated_word:"ترجمت", sentence_word:"جملة",
+    level2_unlocked_note:"فتحتَ الآن المستوى الثاني 🎉", go_level2:"انتقل للمستوى الثاني", back_to_notebook:"رجوع للدفتر",
+    translate_prompt:"ترجم الجملة التالية إلى العربية بأسلوبك:", check_btn:"تحقق",
+    suggested_translation:"الترجمة المقترحة:", compare_note:"قارن إجابتك بها — المهم أن يتطابق المعنى لا كل كلمة.",
+    translate_ph:"اكتب ترجمتك هنا", card_word:"بطاقة",
+
+    free_title:"🎯 تدريب حر", free_sub:"اختر المهارة التي تريد أن تطوّرها الآن.",
+    recommended_badge:"✓ موصى به لمرحلتك", back_to_skills:"← رجوع لقائمة المهارات",
+    skill_grammar_title:"القواعد", skill_grammar_desc:"الأزمنة الثمانية ومبدأ ربط الأزمنة.", skill_grammar_level:"كل المراحل",
+    skill_vocab_title:"المفردات والترجمة", skill_vocab_desc:"بطاقات مفردات وجمل ترجمة متدرجة.", skill_vocab_level:"كل المراحل",
+    skill_reading_title:"القراءة", skill_reading_desc:"نصوص قصيرة وأسئلة فهم واستيعاب.", skill_reading_level:"ثانوي وما بعده",
+    skill_listening_title:"الاستماع", skill_listening_desc:"استمع للجملة واختر معناها الصحيح.", skill_listening_level:"كل المراحل",
+    skill_phonics_title:"الفونكس", skill_phonics_desc:"عائلات الكلمات وربط الصوت بالحرف.", skill_phonics_level:"مناسب للمبتدئين",
+
+    reading_start_qs:"ابدأ أسئلة الفهم (", passage_word:"نص", q_word:"سؤال فهم",
+    passage_done:"أنهيت أسئلة هذا النص 👍", next_passage:"النص التالي",
+    reading_all_done:"أنهيت كل النصوص 🎉",
+
+    listen_btn:"🔊 استمع للجملة", replay_btn:"🔁 أعد الاستماع",
+    choose_meaning:"اختر المعنى الصحيح لما سمعته:", no_speech_note:"متصفحك لا يدعم النطق الآلي — إليك الجملة نصيًا:",
+    listen_q_word:"استمع — سؤال", listen_done:"أنهيت تمرين الاستماع 🎉", listen_word_btn:"🔊 استمع للكلمة",
+
+    phonics_family:"عائلة", set_word:"مجموعة",
+    phonics_cards_done:"تعرّفت على كل كلمات هذه العائلة 👍", start_listen_quiz:"ابدأ اختبار الاستماع",
+    phonics_quiz_header:"استمع واختر الكلمة الصحيحة — عائلة", flash_hint2:"اضغط لرؤية المعنى، ثم استمع للنطق",
+    phonics_all_done:"أنهيت كل عائلات الكلمات 🎉", incorrect_fb:"غير صحيح.",
+
+    report_title:"📊 تقريري", report_sub:"كل نشاط تُنهيه يُحفظ هنا تلقائيًا.",
+    wa_label:"رقم واتساب المعلم (بالصيغة الدولية، بدون +)", wa_ph:"مثال: 9665xxxxxxxx",
+    total_word:"الإجمالي", empty_report:"لم تُنهِ أي نشاط بعد — ابدأ من \"المسار التأسيسي\" أو \"تدريب حر\".",
+    share_all_btn:"📤 أرسل التقرير الكامل للمعلم عبر واتساب",
+    wa_first_report:"أدخل رقم واتساب المعلم في تبويب \"تقريري\" أولًا",
+    wa_first_single:"أدخل رقم واتساب المعلم أولًا", no_activity:"لا يوجد أي نشاط مكتمل بعد لمشاركته",
+    student_word:"طالب", wa_report_title:"📊 تقرير الطالب:", wa_result_title:"📊 نتيجة تمرين"
+  },
+  en:{
+    appTitle:"English StudyMate", appSub:"رفيق الإنجليزية",
+    tabHome:"Home", tabFoundation:"Guided Path", tabFree:"Free Practice", tabReport:"My Report",
+    subLetters:"Letters", subTenses:"Tenses", subTranslate:"Translation",
+    home_hello:"Welcome 👋", home_sub:"English StudyMate — practice the way that suits you.",
+    home_name_label:"Your name", home_name_ph:"Type your name",
+    home_stage_label:"Your school stage", stage_middle:"Middle school", stage_high:"High school", stage_uni:"University",
+    home_code_label:"Have a task code from your teacher?", home_code_ph:"e.g. GRAMMAR", enter_btn:"Go",
+    home_card1_title:"🧭 Start from scratch", home_card1_desc:"A guided path: Letters → Tenses → Translation, step by step.",
+    home_card2_title:"🎯 Train a specific skill", home_card2_desc:"Jump straight in: grammar, reading, listening, phonics, or vocabulary.",
+    home_footer:"In collaboration with the esteemed teacher, Mr. Hossam Abdalla, on teaching methodology",
+    settings_title:"⚙ Settings", settings_lang_label:"Interface language", settings_theme_label:"Theme",
+    theme_dark:"Night", theme_light:"Day", theme_navy:"Deep Navy", theme_amber:"Amber",
+    settings_credits_title:"Rights", settings_credits_line2:"In collaboration with the esteemed teacher, Mr. Hossam Abdalla, on teaching methodology",
+    back_word:"← Back",
+    install_title:"Install English StudyMate on your device", install_btn:"Install now", install_dismiss:"Later",
+    unknown_code:"Unknown code — check it with your teacher", code_unlocked:"Task unlocked ✅",
+
+    letters_title:"✎ Letters Notebook", letters_sub:"Building reading and writing from zero.",
+    letters_exercise:"Exercise", of_word:"of",
+    letters_instr_match:"Tap the capital letter, then its lowercase match in order",
+    letters_instr_odd:"Tap the letter that is different from the rest",
+    letters_done_title:"You finished the letters notebook 🎉", letters_done_sub:"Try the tenses notebook above now.",
+    redo_btn:"Redo the exercise", correct_fb:"Correct!", wrong_fb:"Try again.",
+    odd_correct_fb:"Correct! This is the different letter.", odd_wrong_fb:"Not quite — the correct letter is now highlighted.",
+    lock_prefix:"Finish the “", lock_suffix:"” notebook first to unlock this one",
+
+    grammar_title:"⏳ Grammar — Tenses", step_word:"Step", link_step_suffix:"— tense-linking principle",
+    prev_btn:"Previous", next_btn:"Next", start_link_quiz:"Start the linking quiz (", questions_word:"questions)",
+    link_quiz_header:"Linking quiz — question", correct_so_far:"Correct so far:",
+    quiz_done_title:"Quiz complete 🎉", scored_word:"You scored", out_of_word:"out of",
+    share_result_btn:"📤 Share result with teacher", review_from_start:"Review the lesson from the start",
+
+    vocab_title:"⇄ Vocabulary & Translation", level_intro:"Two graded levels: foundation, then advanced.",
+    level1_title:"Level One — Foundation", level1_desc:"Everyday vocabulary and simple sentences: it is / there is / I have",
+    level2_title:"Level Two — Advanced", level2_desc:"Comparisons, modal verbs, pronouns, and prepositions",
+    level1_first_note:"Finish level one first to unlock this level", locked_prefix:"🔒 ",
+    pill_vocab:"Vocabulary", pill_sentences:"Translation sentences",
+    flash_hint:"Tap to reveal the meaning", vocab_done:"You finished all the cards 🎉", start_sentences:"Start translation sentences",
+    level_done_title:"You finished this level 🎉", translated_word:"You translated", sentence_word:"sentences",
+    level2_unlocked_note:"Level two is now unlocked 🎉", go_level2:"Go to level two", back_to_notebook:"Back to notebook",
+    translate_prompt:"Translate the following sentence into Arabic, in your own words:", check_btn:"Check",
+    suggested_translation:"Suggested translation:", compare_note:"Compare it with your answer — matching the meaning matters more than exact words.",
+    translate_ph:"Type your translation here", card_word:"Card",
+
+    free_title:"🎯 Free Practice", free_sub:"Choose the skill you want to work on now.",
+    recommended_badge:"✓ Recommended for your stage", back_to_skills:"← Back to skills list",
+    skill_grammar_title:"Grammar", skill_grammar_desc:"The eight tenses and the tense-linking principle.", skill_grammar_level:"All levels",
+    skill_vocab_title:"Vocabulary & Translation", skill_vocab_desc:"Vocabulary flashcards and graded translation sentences.", skill_vocab_level:"All levels",
+    skill_reading_title:"Reading", skill_reading_desc:"Short passages with comprehension questions.", skill_reading_level:"High school & beyond",
+    skill_listening_title:"Listening", skill_listening_desc:"Listen to the sentence and choose its correct meaning.", skill_listening_level:"All levels",
+    skill_phonics_title:"Phonics", skill_phonics_desc:"Word families and sound-letter matching.", skill_phonics_level:"Best for beginners",
+
+    reading_start_qs:"Start comprehension questions (", passage_word:"Passage", q_word:"Comprehension question",
+    passage_done:"You finished this passage's questions 👍", next_passage:"Next passage",
+    reading_all_done:"You finished all passages 🎉",
+
+    listen_btn:"🔊 Listen to the sentence", replay_btn:"🔁 Replay",
+    choose_meaning:"Choose the correct meaning of what you heard:", no_speech_note:"Your browser doesn't support speech — here's the sentence as text:",
+    listen_q_word:"Listen — question", listen_done:"You finished the listening exercise 🎉", listen_word_btn:"🔊 Listen to the word",
+
+    phonics_family:"family", set_word:"Set",
+    phonics_cards_done:"You've met all the words in this family 👍", start_listen_quiz:"Start the listening quiz",
+    phonics_quiz_header:"Listen and choose the right word — the", flash_hint2:"Tap to reveal the meaning, then listen to the pronunciation",
+    phonics_all_done:"You finished all the word families 🎉", incorrect_fb:"Incorrect.",
+
+    report_title:"📊 My Report", report_sub:"Every activity you finish is saved here automatically.",
+    wa_label:"Teacher's WhatsApp number (international format, no +)", wa_ph:"e.g. 9665xxxxxxxx",
+    total_word:"Total", empty_report:"You haven't finished any activity yet — start from “Guided Path” or “Free Practice”.",
+    share_all_btn:"📤 Send the full report to your teacher via WhatsApp",
+    wa_first_report:"Enter your teacher's WhatsApp number in the “My Report” tab first",
+    wa_first_single:"Enter your teacher's WhatsApp number first", no_activity:"No completed activity yet to share",
+    student_word:"Student", wa_report_title:"📊 Student report:", wa_result_title:"📊 Exercise result"
+  }
+};
+function t(key){ const l = STATE.lang||"ar"; return (STR[l] && STR[l][key]!==undefined) ? STR[l][key] : STR.ar[key]; }
+function applyLangDom(){
+  const l = STATE.lang||"ar";
+  document.documentElement.setAttribute("lang", l==="en"?"en":"ar");
+  document.documentElement.setAttribute("dir", l==="en"?"ltr":"rtl");
+  document.body.setAttribute("data-lang", l);
+  const tb = document.getElementById("titleBlock");
+  if(tb) tb.innerHTML = `<h1>${t("appTitle")}</h1><span class="brand-sub en">${t("appSub")}</span>`;
 }
-function updateThemeBtn(){
-  const isLight = document.documentElement.getAttribute("data-theme") === "light";
-  const b = document.getElementById("themeBtn");
-  if(b) b.textContent = isLight ? "☾" : "☀";
+function toggleLang(){ STATE.lang = (STATE.lang==="en") ? "ar" : "en"; saveState(STATE); applyLangDom(); renderTabbar(); render(); }
+function setLang(l){ if(STATE.lang===l) return; STATE.lang=l; saveState(STATE); applyLangDom(); renderTabbar(); render(); }
+function openSettings(){ sub.prevTab = currentTab; currentTab = "settings"; setAccent(); render(); }
+function closeSettings(){ switchTab(sub.prevTab || "home"); }
+
+function nudge(msg){
+  const existing = document.getElementById("nudgeToast");
+  if(existing) existing.remove();
+  const el = document.createElement("div");
+  el.id = "nudgeToast"; el.className = "nudge-toast"; el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(), 2000);
+}
+function speak(text){
+  if(!("speechSynthesis" in window)) return false;
+  try{
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "en-US"; u.rate = 0.9;
+    speechSynthesis.speak(u);
+    return true;
+  }catch(e){ return false; }
 }
 
 /* ---------------------------- Content: Letters --------------------------- */
@@ -284,7 +520,6 @@ const TENSE_LESSONS = [
   {en:"Future (will)", ar:"المستقبل", use:"قرار أو توقّع لم يحدث بعد.",
    ex:[["I will email the professor tonight.","سأُرسل بريدًا للأستاذ الليلة."]]},
 ];
-
 const LINK_PRINCIPLE = [
   "لا تحفظ جدولًا لكل رابط — افهم مبدأً واحدًا: الرابط الزمني يشدّ طرفي الجملة إلى نفس الخط الزمني.",
   "إن كان أحد طرفي الجملة ماضيًا، فالطرف الآخر غالبًا ماضٍ أيضًا (بسيط أو مستمر أو تام) — لا مضارع ولا مستقبل معه.",
@@ -292,7 +527,6 @@ const LINK_PRINCIPLE = [
   "كلمة Since وحدها تسمح بربط ماضٍ بسيط (بداية الحدث) بمضارع تام (استمراره حتى الآن).",
   "الأقدم بين حدثين ماضيين يأخذ الماضي التام، والآخر يبقى ماضيًا بسيطًا."
 ];
-
 const LINK_QUIZ = [
   {q:"I will send the file as soon as I ___ home.", opts:["arrive","will arrive","arrived"], a:0,
    why:"بعد As soon as والجملة تتحدث عن المستقبل، يتحول الفعل إلى مضارع بسيط لا will."},
@@ -304,7 +538,7 @@ const LINK_QUIZ = [
    why:"Since يربط بداية ماضية بسيطة باستمرار حتى الآن (مضارع تام في الجزء الأول)."},
   {q:"I won't call you until you ___ ready.", opts:["are","will be","were"], a:0,
    why:"بعد until والحديث مستقبلي، يتحول الفعل إلى مضارع بسيط."},
-  {q:"She was tired because she ___ all night.", opts:["studies","had studied","studies"], a:1,
+  {q:"She was tired because she ___ all night.", opts:["studies","had studied","study"], a:1,
    why:"العلة (had studied) سابقة لنتيجتها (was tired)، فتأخذ الماضي التام."},
   {q:"By the time the bus arrives, I ___ for an hour.", opts:["wait","will have waited","waited"], a:1,
    why:"حدث سيكتمل قبل نقطة مستقبلية أخرى — مستقبل تام."},
@@ -320,7 +554,7 @@ const LINK_QUIZ = [
    why:"بعد once وسياق مستقبلي، الفعل يتحول لمضارع بسيط."}
 ];
 
-/* ------------------------- Content: Translation L1 ------------------------ */
+/* ------------------------- Content: Translation --------------------------- */
 const T1_VOCAB = [
   ["Head","رأس"],["Hand","يد"],["Shoulder","كتف"],["Chest","صدر"],["Back","ظهر"],
   ["Cat","قطة"],["Rabbit","أرنب"],["Sheep","خروف"],["Camel","جمل"],["Owl","بومة"],
@@ -340,8 +574,6 @@ const T1_SENTENCES = [
   {en:"Is your neighbor happy today?", ar:"هل جارك سعيد اليوم؟"},
   {en:"My shoulder hurts a little.", ar:"كتفي يؤلمني قليلًا."}
 ];
-
-/* ------------------------- Content: Translation L2 ------------------------ */
 const T2_VOCAB = [
   ["Taller than","أطول من"],["The shortest","الأقصر"],["More expensive","أغلى"],["The cheapest","الأرخص"],
   ["Nurse","ممرض/ة"],["Pharmacist","صيدلي"],["Accountant","محاسب"],["Translator","مترجم"],
@@ -362,89 +594,219 @@ const T2_SENTENCES = [
   {en:"This is not my scarf; it's hers.", ar:"هذا ليس وشاحي؛ إنه وشاحها."}
 ];
 
-/* ------------------------------- Tabs setup ------------------------------- */
-const TABS = [
-  {id:"letters",   label:"الحروف",   icon:"✎", color:"var(--c-letters)"},
-  {id:"tenses",    label:"الأزمنة",  icon:"⏳", color:"var(--c-tenses)"},
-  {id:"translate", label:"الترجمة",  icon:"⇄", color:"var(--c-translate)"},
+/* ------------------------- Content: Reading (new) -------------------------- */
+const READING_PASSAGES = [
+  {title:"يوم دراسي",
+   text:"Sara wakes up early every day. She eats breakfast, then walks to school with her brother. In class, she enjoys science more than math. After school, she does her homework before dinner. On weekends, she likes to read stories and play with her friends.",
+   qs:[
+     {q:"What does Sara do before she walks to school?", opts:["She eats breakfast","She plays with friends","She reads a story"], a:0, why:"النص يذكر أنها تأكل الفطور ثم تمشي إلى المدرسة."},
+     {q:"Which subject does Sara enjoy more?", opts:["Math","Science","History"], a:1, why:"النص يقول إنها تستمتع بالعلوم أكثر من الرياضيات."},
+     {q:"What does she do on weekends?", opts:["She works","She reads and plays","She studies math only"], a:1, why:"في نهاية الأسبوع تقرأ القصص وتلعب مع أصدقائها."}
+   ]},
+  {title:"رحلة العائلة",
+   text:"Last summer, Ali's family traveled to a small city near the sea. They stayed in a simple hotel and visited the old market every morning. In the afternoon, they swam and rested under a big tree. Ali still remembers the fresh fish they ate there.",
+   qs:[
+     {q:"Where did Ali's family travel?", opts:["To a city near the sea","To a big farm","To another country"], a:0, why:"النص يذكر أنهم سافروا إلى مدينة صغيرة قرب البحر."},
+     {q:"What did they visit every morning?", opts:["A museum","The old market","A school"], a:1, why:"كانوا يزورون السوق القديم كل صباح."},
+     {q:"What does Ali remember most?", opts:["The hotel room","The fresh fish","The long trip"], a:1, why:"يتذكر علي السمك الطازج الذي أكلوه هناك."}
+   ]},
+  {title:"في المكتبة",
+   text:"Omar spends two hours in the library after his last class. He usually reads about history, but this week he is preparing for an English test. He borrowed a grammar book and a short story collection. He hopes the practice will help him speak more confidently.",
+   qs:[
+     {q:"How long does Omar stay in the library?", opts:["One hour","Two hours","All day"], a:1, why:"النص يذكر أنه يقضي ساعتين في المكتبة."},
+     {q:"What is Omar preparing for this week?", opts:["A history trip","An English test","A football match"], a:1, why:"هذا الأسبوع يستعد لاختبار في اللغة الإنجليزية."},
+     {q:"What does Omar hope the practice will do?", opts:["Help him speak more confidently","Help him finish faster","Help him avoid the test"], a:0, why:"يأمل أن يساعده التمرين على التحدث بثقة أكبر."}
+   ]}
 ];
-let currentTab = STATE.lastTab || "letters";
-let sub = {}; // per-tab sub-screen state, reset on tab switch except where noted
 
-/* التطبيق يقود الطالب: لا ينتقل لدفتر جديد قبل أن يُنهي الذي قبله. */
-function isTabUnlocked(id){
+/* ------------------------- Content: Listening (new) ------------------------ */
+const LISTEN_ITEMS = [
+  {en:"I go to school by bus every morning.", opts:["أنا أذهب إلى المدرسة بالحافلة كل صباح.","أنا أذهب إلى العمل بالسيارة كل صباح.","أنا أدرس في المكتبة كل صباح."], a:0},
+  {en:"She has already finished her homework.", opts:["هي ستبدأ واجبها الآن.","هي أنهت واجبها بالفعل.","هي نسيت واجبها في البيت."], a:1},
+  {en:"We will visit our grandmother next week.", opts:["سنزور جدتنا الأسبوع القادم.","زرنا جدتنا الأسبوع الماضي.","نزور جدتنا كل أسبوع."], a:0},
+  {en:"He was reading a book when the phone rang.", opts:["كان يقرأ كتابًا عندما رنّ الهاتف.","سيقرأ كتابًا بعد أن يرنّ الهاتف.","يقرأ كتابًا كل يوم قبل النوم."], a:0},
+  {en:"They don't like loud music at night.", opts:["هم يحبون الموسيقى الصاخبة ليلًا.","هم لا يحبون الموسيقى الصاخبة ليلًا.","هم يستمعون للموسيقى كل ليلة."], a:1},
+  {en:"Can you help me carry these bags?", opts:["هل يمكنك مساعدتي في حمل هذه الحقائب؟","هل اشتريت هذه الحقائب؟","أين تركت هذه الحقائب؟"], a:0}
+];
+
+/* ------------------------- Content: Phonics (new) --------------------------- */
+const PHONICS_SETS = [
+  {family:"at", words:[["cat","قطة"],["hat","قبعة"],["mat","سجادة صغيرة"],["bat","خفاش"]]},
+  {family:"an", words:[["pan","مقلاة"],["fan","مروحة"],["man","رجل"],["van","شاحنة صغيرة"]]},
+  {family:"ee", words:[["tree","شجرة"],["bee","نحلة"],["free","حر"],["knee","ركبة"]]},
+];
+
+/* ------------------------------- Main tabs --------------------------------- */
+function TABS(){ return [
+  {id:"home",        label:t("tabHome"),        icon:"🏠", color:"var(--c-home)"},
+  {id:"foundation",  label:t("tabFoundation"),  icon:"🧭", color:"var(--c-letters)"},
+  {id:"free",        label:t("tabFree"),        icon:"🎯", color:"var(--c-free)"},
+  {id:"report",      label:t("tabReport"),      icon:"📊", color:"var(--c-report)"},
+];}
+function FOUND_TABS(){ return [
+  {id:"letters",   label:t("subLetters"),   icon:"✎", color:"var(--c-letters)", tint:"var(--c-letters-tint)"},
+  {id:"tenses",    label:t("subTenses"),    icon:"⏳", color:"var(--c-tenses)",  tint:"var(--c-tenses-tint)"},
+  {id:"translate", label:t("subTranslate"), icon:"⇄", color:"var(--c-translate)", tint:"var(--c-translate-tint)"},
+];}
+function FREE_SKILLS(){ return [
+  {id:"grammar",   title:t("skill_grammar_title"),   icon:"⏳", desc:t("skill_grammar_desc"),   level:t("skill_grammar_level"),   recommendFor:["متوسط","ثانوي","جامعي"]},
+  {id:"vocab",     title:t("skill_vocab_title"),     icon:"⇄", desc:t("skill_vocab_desc"),     level:t("skill_vocab_level"),     recommendFor:["متوسط","ثانوي","جامعي"]},
+  {id:"reading",   title:t("skill_reading_title"),   icon:"📖", desc:t("skill_reading_desc"),   level:t("skill_reading_level"),   recommendFor:["ثانوي","جامعي"]},
+  {id:"listening", title:t("skill_listening_title"), icon:"🎧", desc:t("skill_listening_desc"), level:t("skill_listening_level"), recommendFor:["متوسط","ثانوي","جامعي"]},
+  {id:"phonics",   title:t("skill_phonics_title"),   icon:"🔤", desc:t("skill_phonics_desc"),   level:t("skill_phonics_level"),   recommendFor:["متوسط"]},
+];}
+const CODES = {
+  GRAMMAR:{tab:"free", skill:"grammar"}, VOCAB:{tab:"free", skill:"vocab"},
+  READING:{tab:"free", skill:"reading"}, LISTEN:{tab:"free", skill:"listening"},
+  PHONICS:{tab:"free", skill:"phonics"}, START:{tab:"foundation"}
+};
+
+let currentTab = STATE.lastTab || "home";
+let foundSub = STATE.foundSub || "letters";
+let sub = {};
+
+function isFoundUnlocked(id){
   if(id==="letters") return true;
   if(id==="tenses") return !!STATE.done.letters;
   if(id==="translate") return !!STATE.done.tenses;
   return true;
 }
-if(!isTabUnlocked(currentTab)) currentTab = "letters";
+if(!isFoundUnlocked(foundSub)) foundSub = "letters";
 
-function nudge(msg){
-  const existing = document.getElementById("nudgeToast");
-  if(existing) existing.remove();
-  const t = document.createElement("div");
-  t.id = "nudgeToast"; t.className = "nudge-toast"; t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(()=>t.remove(), 1800);
+function pushReport(module, title, score, total){
+  STATE.reports.push({module, title, score, total, date:new Date().toLocaleDateString(STATE.lang==="en"?"en-GB":"ar-EG")});
+  saveState(STATE);
+}
+function resetSkillState(id){
+  sub.reported = false;
+  if(id==="reading"){ sub.readIdx=0; sub.readQIdx=-1; sub.readCorrect=0; sub.readTotal=0; }
+  if(id==="listening"){ sub.listenIdx=0; sub.listenCorrect=0; }
+  if(id==="phonics"){ sub.phonIdx=0; sub.phonMode="cards"; sub.flashIdx=0; sub.phonCorrect=0; sub.phonTotal=0; }
+  if(id==="grammar"){ sub.tensesView="lesson"; sub.lessonStep=0; sub.quizIdx=0; sub.quizCorrect=0; }
+  if(id==="vocab"){ sub.trLevel=null; sub.trMode="vocab"; sub.flashIdx=0; sub.transIdx=0; sub.transCorrect=0; }
+}
+function applyCode(raw){
+  const code = (raw||"").trim().toUpperCase();
+  const c = CODES[code];
+  if(!c){ nudge(t("unknown_code")); return; }
+  currentTab = c.tab; STATE.lastTab = c.tab; saveState(STATE);
+  if(c.tab==="free" && c.skill){ sub.freeSkill = c.skill; resetSkillState(c.skill); }
+  setAccent(); renderTabbar(); render();
+  nudge(t("code_unlocked"));
 }
 
-function setAccent(tabId){
-  const t = TABS.find(x=>x.id===tabId);
-  document.body.style.setProperty("--glow", t.color);
-  document.body.style.setProperty("--glow-tint", `color-mix(in srgb, ${t.color} 16%, transparent)`);
-  document.body.style.setProperty("--btn-bg", `color-mix(in srgb, ${t.color} 18%, transparent)`);
-  document.body.style.setProperty("--btn-line", `color-mix(in srgb, ${t.color} 34%, transparent)`);
-  document.body.style.setProperty("--btn-ink", `color-mix(in srgb, ${t.color} 78%, white)`);
+function setAccent(){
+  let color, tint;
+  if(currentTab==="foundation"){
+    const f = FOUND_TABS().find(x=>x.id===foundSub);
+    color = f.color; tint = f.tint;
+  } else if(currentTab==="free"){
+    color = "var(--c-free)"; tint = "var(--c-free-tint)";
+  } else if(currentTab==="report"){
+    color = "var(--c-report)"; tint = "var(--c-report-tint)";
+  } else {
+    color = "var(--c-home)"; tint = "var(--c-home-tint)";
+  }
+  document.body.style.setProperty("--glow", color);
+  document.body.style.setProperty("--glow-tint", tint);
+  document.body.style.setProperty("--btn-bg", `color-mix(in srgb, ${color} 18%, transparent)`);
+  document.body.style.setProperty("--btn-line", `color-mix(in srgb, ${color} 34%, transparent)`);
+  document.body.style.setProperty("--btn-ink", `color-mix(in srgb, ${color} 78%, white)`);
 }
 function renderTabbar(){
-  document.getElementById("tabbar").innerHTML = TABS.map(t=>{
-    const unlocked = isTabUnlocked(t.id);
-    return `<button class="tab ${t.id===currentTab?'active':''} ${unlocked?'':'locked'}" style="--tab-color:${t.color}" onclick="switchTab('${t.id}')">
-      <span class="ic">${unlocked ? t.icon : "🔒"}</span><span>${t.label}</span>
+  document.getElementById("tabbar").innerHTML = TABS().map(tb=>{
+    return `<button class="tab ${tb.id===currentTab?'active':''}" style="--tab-color:${tb.color}" onclick="switchTab('${tb.id}')">
+      <span class="ic">${tb.icon}</span><span>${tb.label}</span>
     </button>`;
   }).join("");
 }
 function switchTab(id){
-  if(!isTabUnlocked(id)){
-    const prev = TABS[TABS.findIndex(x=>x.id===id)-1];
-    nudge(`أنهِ دفتر «${prev.label}» أولًا حتى يفتح هذا الدفتر`);
+  currentTab = id; STATE.lastTab = id; saveState(STATE);
+  setAccent(); renderTabbar(); render();
+}
+function switchFound(id){
+  if(!isFoundUnlocked(id)){
+    const prev = FOUND_TABS()[FOUND_TABS().findIndex(x=>x.id===id)-1];
+    nudge(`${t("lock_prefix")}${prev.label}${t("lock_suffix")}`);
     return;
   }
-  currentTab = id; STATE.lastTab = id; saveState(STATE);
-  setAccent(id);
-  renderTabbar();
-  render();
+  foundSub = id; STATE.foundSub = id; saveState(STATE);
+  setAccent(); render();
 }
 function render(){
   const inner = document.getElementById("inner");
-  if(currentTab==="letters") inner.innerHTML = renderLetters();
-  if(currentTab==="tenses") inner.innerHTML = renderTenses();
-  if(currentTab==="translate") inner.innerHTML = renderTranslate();
+  if(currentTab==="home") inner.innerHTML = renderHome();
+  else if(currentTab==="foundation") inner.innerHTML = renderFoundSubbar() + renderFoundContent();
+  else if(currentTab==="free") inner.innerHTML = renderFree();
+  else if(currentTab==="report") inner.innerHTML = renderReportTab();
+  else if(currentTab==="settings") inner.innerHTML = renderSettings();
   wireEvents();
 }
-function subHeader(title){
-  return `<div class="subbar"><span class="t">${title}</span></div>`;
+function subHeader(title){ return `<div class="subbar"><span class="t">${title}</span></div>`; }
+
+/* --------------------------------- Home ------------------------------------ */
+function renderHome(){
+  const name = STATE.studentName || "";
+  const stage = STATE.stage || "";
+  return `<div class="hero"><h2>${t("home_hello")}</h2><p>${t("home_sub")}</p></div>
+    <label class="field-label">${t("home_name_label")}</label>
+    <div class="field-row"><input class="field-input" id="nameInput" value="${name}" placeholder="${t("home_name_ph")}"></div>
+    <label class="field-label">${t("home_stage_label")}</label>
+    <div class="pill-row" id="stagePills">
+      ${["متوسط","ثانوي","جامعي"].map((s,i)=>{
+        const label = [t("stage_middle"),t("stage_high"),t("stage_uni")][i];
+        return `<span class="pill ${stage===s?'active':''}" data-s="${s}">${label}</span>`;
+      }).join("")}
+    </div>
+    <label class="field-label">${t("home_code_label")}</label>
+    <div class="field-row"><input class="field-input en" id="codeInput" placeholder="${t("home_code_ph")}"><button class="field-btn" id="codeBtn">${t("enter_btn")}</button></div>
+    <div class="notebook" onclick="switchTab('foundation')"><h3>${t("home_card1_title")}</h3><p>${t("home_card1_desc")}</p></div>
+    <div class="notebook" onclick="switchTab('free')"><h3>${t("home_card2_title")}</h3><p>${t("home_card2_desc")}</p></div>
+    <div class="footer-credit">${t("settings_credits_line2")}<br>ARAFAT ALRAJHI © 2026</div>`;
+}
+function wireHome(){
+  const nameInput = document.getElementById("nameInput");
+  if(nameInput) nameInput.onchange = ()=>{ STATE.studentName = nameInput.value.trim(); saveState(STATE); };
+  const pills = document.getElementById("stagePills");
+  if(pills) [...pills.querySelectorAll(".pill")].forEach(p=>p.onclick=()=>{
+    STATE.stage = p.dataset.s; saveState(STATE); render();
+  });
+  const codeBtn = document.getElementById("codeBtn");
+  if(codeBtn) codeBtn.onclick = ()=>{ applyCode(document.getElementById("codeInput").value); };
 }
 
-/* ------------------------------- Letters ----------------------------------- */
-sub.lettersStep = STATE.lettersStep || 0;
+/* ----------------------------- Foundation ----------------------------------- */
+function renderFoundSubbar(){
+  return `<div class="subtabs">${FOUND_TABS().map(tb=>{
+    const unlocked = isFoundUnlocked(tb.id);
+    return `<button class="subtab ${tb.id===foundSub?'active':''} ${unlocked?'':'locked'}" style="--sc:${tb.color};--sc-tint:${tb.tint}" onclick="switchFound('${tb.id}')">
+      <span class="ic">${unlocked?tb.icon:'🔒'}</span><span>${tb.label}</span>
+    </button>`;
+  }).join("")}</div>`;
+}
+function renderFoundContent(){
+  if(foundSub==="letters") return renderLetters();
+  if(foundSub==="tenses") return renderTenses();
+  return renderTranslate();
+}
 
+/* ------------------------------- Letters ------------------------------------ */
+sub.lettersStep = STATE.lettersStep || 0;
 function renderLetters(){
   const total = LETTER_SETS.length + ODD_ROWS.length;
   if(sub.lettersStep >= total){
     STATE.done.letters = {done:true}; saveState(STATE);
-    return `<div class="hero"><h2>✎ دفتر الحروف</h2><p>تأسيس القراءة والكتابة لمن يبدأ من الصفر.</p></div>
-      <div class="done-banner"><h3>أنهيت دفتر الحروف 🎉</h3><p>جرّب الآن دفتر الأزمنة من التبويب أسفل الشاشة.</p></div>
-      <button class="btn" style="width:100%" onclick="sub.lettersStep=0; STATE.lettersStep=0; saveState(STATE); render();">أعِد التمرين</button>`;
+    return `<div class="hero"><h2>${t("letters_title")}</h2><p>${t("letters_sub")}</p></div>
+      <div class="done-banner"><h3>${t("letters_done_title")}</h3><p>${t("letters_done_sub")}</p></div>
+      <button class="btn" style="width:100%" onclick="sub.lettersStep=0; STATE.lettersStep=0; saveState(STATE); render();">${t("redo_btn")}</button>`;
   }
   const n = total;
   if(sub.lettersStep < LETTER_SETS.length){
     const set = LETTER_SETS[sub.lettersStep];
     const lower = [...set.map(x=>x.toLowerCase())].sort(()=>Math.random()-.5);
-    return `<div class="hero"><h2>✎ دفتر الحروف</h2><p>تمرين ${sub.lettersStep+1} من ${n}</p></div>
+    return `<div class="hero"><h2>${t("letters_title")}</h2><p>${t("letters_exercise")} ${sub.lettersStep+1} ${t("of_word")} ${n}</p></div>
       <div class="card">
-        <h3>اضغط الحرف الكبير ثم صغيره بنفس الترتيب</h3>
+        <h3>${t("letters_instr_match")}</h3>
         <div class="letters-row" id="upperRow">${set.map(c=>`<div class="letter-box en" data-v="${c}">${c}</div>`).join("")}</div>
         <div class="letters-row" id="lowerRow">${lower.map(c=>`<div class="letter-box en" data-v="${c}">${c}</div>`).join("")}</div>
         <div class="feedback" id="fbLetters"></div>
@@ -452,9 +814,9 @@ function renderLetters(){
   } else {
     const idx = sub.lettersStep - LETTER_SETS.length;
     const item = ODD_ROWS[idx];
-    return `<div class="hero"><h2>✎ دفتر الحروف</h2><p>تمرين ${sub.lettersStep+1} من ${n}</p></div>
+    return `<div class="hero"><h2>${t("letters_title")}</h2><p>${t("letters_exercise")} ${sub.lettersStep+1} ${t("of_word")} ${n}</p></div>
       <div class="card">
-        <h3>اضغط الحرف المختلف عن البقية</h3>
+        <h3>${t("letters_instr_odd")}</h3>
         <div class="letters-row" id="oddRow">${item.row.map((c,i)=>`<div class="letter-box en" data-i="${i}">${c}</div>`).join("")}</div>
         <div class="feedback" id="fbOdd"></div>
       </div>`;
@@ -479,10 +841,10 @@ function wireLetters(){
         b.classList.add("odd-correct"); pickedUpper.classList.add("odd-correct");
         matched.add(pickedUpper.dataset.v);
         pickedUpper.onclick=null; b.onclick=null; pickedUpper=null;
-        fb.className="feedback show ok"; fb.textContent="صحيح!";
+        fb.className="feedback show ok"; fb.textContent=t("correct_fb");
         if(matched.size===set.length) setTimeout(()=>{ sub.lettersStep++; STATE.lettersStep=sub.lettersStep; saveState(STATE); render(); }, 500);
       } else {
-        fb.className="feedback show bad"; fb.textContent="حاول مرة أخرى.";
+        fb.className="feedback show bad"; fb.textContent=t("wrong_fb");
         pickedUpper.classList.remove("picked"); pickedUpper=null;
       }
     });
@@ -497,17 +859,17 @@ function wireLetters(){
       const fb = document.getElementById("fbOdd");
       boxes.forEach(x=>x.onclick=null);
       boxes[item.odd].classList.add("odd-correct");
-      if(i2===item.odd){ fb.className="feedback show ok"; fb.textContent="صحيح! هذا هو الحرف المختلف."; }
-      else { b.classList.add("odd-wrong"); fb.className="feedback show bad"; fb.textContent="غير صحيح، الحرف الصحيح مُلوّن الآن."; }
+      if(i2===item.odd){ fb.className="feedback show ok"; fb.textContent=t("odd_correct_fb"); }
+      else { b.classList.add("odd-wrong"); fb.className="feedback show bad"; fb.textContent=t("odd_wrong_fb"); }
       setTimeout(()=>{ sub.lettersStep++; STATE.lettersStep=sub.lettersStep; saveState(STATE); render(); }, 900);
     });
   }
 }
 
-/* -------------------------------- Tenses ----------------------------------- */
-sub.tensesView = sub.tensesView || "lesson"; // 'lesson' | 'quiz'
-sub.lessonStep = sub.lessonStep || 0; // 0..TENSE_LESSONS.length-1 = tenses, then one principle bullet per step
-sub.quizIdx = 0; sub.quizCorrect = 0;
+/* -------------------------------- Tenses ------------------------------------- */
+sub.tensesView = sub.tensesView || "lesson";
+sub.lessonStep = sub.lessonStep || 0;
+sub.quizIdx = sub.quizIdx || 0; sub.quizCorrect = sub.quizCorrect || 0;
 const TENSES_TOTAL_STEPS = TENSE_LESSONS.length + LINK_PRINCIPLE.length;
 function renderTenses(){
   if(sub.tensesView==="lesson"){
@@ -515,44 +877,43 @@ function renderTenses(){
     const dots = Array.from({length:TENSES_TOTAL_STEPS}, (_,i)=>
       `<span class="step-dot ${i===step?'on':i<step?'past':''}"></span>`).join("");
     if(step < TENSE_LESSONS.length){
-      const t = TENSE_LESSONS[step];
-      return `<div class="hero"><h2>⏳ دفتر الأزمنة</h2><p>الخطوة ${step+1} من ${TENSES_TOTAL_STEPS}</p></div>
+      const lst = TENSE_LESSONS[step];
+      return `<div class="hero"><h2>${t("grammar_title")}</h2><p>${t("step_word")} ${step+1} ${t("of_word")} ${TENSES_TOTAL_STEPS}</p></div>
         <div class="card">
-          <h3><span class="en">${t.en}</span> — ${t.ar}</h3>
-          <p>${t.use}</p>
-          ${t.ex.map(e=>`<div class="eg"><span class="en">${e[0]}</span>${e[1]}</div>`).join("")}
+          <h3><span class="en">${lst.en}</span> — ${lst.ar}</h3>
+          <p>${lst.use}</p>
+          ${lst.ex.map(e=>`<div class="eg"><span class="en">${e[0]}</span>${e[1]}</div>`).join("")}
         </div>
         <div class="step-dots">${dots}</div>
         <div class="step-nav">
-          ${step>0?`<button class="btn ghost" onclick="sub.lessonStep--; render();">السابق</button>`:""}
-          <button class="btn" onclick="sub.lessonStep++; render();">التالي</button>
+          ${step>0?`<button class="btn ghost" onclick="sub.lessonStep--; render();">${t("prev_btn")}</button>`:""}
+          <button class="btn" onclick="sub.lessonStep++; render();">${t("next_btn")}</button>
         </div>`;
     }
-    // مبدأ الربط: نقطة واحدة في كل شاشة
     const pIdx = step - TENSE_LESSONS.length;
     const isLastPrinciple = pIdx === LINK_PRINCIPLE.length - 1;
-    return `<div class="hero"><h2>⏳ دفتر الأزمنة</h2><p>الخطوة ${step+1} من ${TENSES_TOTAL_STEPS} — مبدأ ربط الأزمنة</p></div>
+    return `<div class="hero"><h2>${t("grammar_title")}</h2><p>${t("step_word")} ${step+1} ${t("of_word")} ${TENSES_TOTAL_STEPS} ${t("link_step_suffix")}</p></div>
       <div class="card"><p style="font-size:19px;">${LINK_PRINCIPLE[pIdx]}</p></div>
       <div class="step-dots">${dots}</div>
       <div class="step-nav">
-        <button class="btn ghost" onclick="sub.lessonStep--; render();">السابق</button>
+        <button class="btn ghost" onclick="sub.lessonStep--; render();">${t("prev_btn")}</button>
         ${isLastPrinciple
-          ? `<button class="btn" onclick="sub.tensesView='quiz'; sub.quizIdx=0; sub.quizCorrect=0; render();">ابدأ تمرين الربط (${LINK_QUIZ.length} سؤال)</button>`
-          : `<button class="btn" onclick="sub.lessonStep++; render();">التالي</button>`}
+          ? `<button class="btn" onclick="sub.tensesView='quiz'; sub.quizIdx=0; sub.quizCorrect=0; render();">${t("start_link_quiz")}${LINK_QUIZ.length} ${t("questions_word")}</button>`
+          : `<button class="btn" onclick="sub.lessonStep++; render();">${t("next_btn")}</button>`}
       </div>`;
   }
   if(sub.quizIdx >= LINK_QUIZ.length){
     STATE.scores.tenses = {correct:sub.quizCorrect, total:LINK_QUIZ.length};
     STATE.done.tenses = {done:true}; saveState(STATE);
-    renderTabbar();
-    return `<div class="hero"><h2>⏳ دفتر الأزمنة</h2></div>
-      <div class="done-banner"><h3>انتهى التمرين 🎉</h3><p>حصلت على <b class="en">${sub.quizCorrect}</b> من <b class="en">${LINK_QUIZ.length}</b></p>
-      <p style="margin-top:8px;font-size:14.5px;">فتحتَ الآن دفتر الترجمة 🎉</p></div>
-      <button class="btn" style="width:100%" onclick="sub.tensesView='lesson'; sub.lessonStep=0; render();">مراجعة الدرس من البداية</button>`;
+    if(!sub.reported){ pushReport("grammar", t("skill_grammar_title"), sub.quizCorrect, LINK_QUIZ.length); sub.reported = true; }
+    return `<div class="hero"><h2>${t("grammar_title")}</h2></div>
+      <div class="done-banner"><h3>${t("quiz_done_title")}</h3><p>${t("scored_word")} <b class="en">${sub.quizCorrect}</b> ${t("out_of_word")} <b class="en">${LINK_QUIZ.length}</b></p></div>
+      <button class="btn" style="width:100%;margin-bottom:10px;" onclick="shareSingle('${t("skill_grammar_title")}', ${sub.quizCorrect}, ${LINK_QUIZ.length});">${t("share_result_btn")}</button>
+      <button class="btn ghost" style="width:100%" onclick="sub.tensesView='lesson'; sub.lessonStep=0; render();">${t("review_from_start")}</button>`;
   }
   const q = LINK_QUIZ[sub.quizIdx];
-  return `${subHeader('تمرين الربط — سؤال '+(sub.quizIdx+1)+' من '+LINK_QUIZ.length)}
-    <div class="score-bar"><span>الصحيح حتى الآن: <b class="en">${sub.quizCorrect}</b></span></div>
+  return `${subHeader(t("link_quiz_header")+' '+(sub.quizIdx+1)+' '+t("of_word")+' '+LINK_QUIZ.length)}
+    <div class="score-bar"><span>${t("correct_so_far")} <b class="en">${sub.quizCorrect}</b></span></div>
     <div class="card glass">
       <div class="q-text en">${q.q}</div>
       <div class="choices" id="choices">${q.opts.map((o,i)=>`<button class="choice en" data-i="${i}">${o}</button>`).join("")}</div>
@@ -576,50 +937,53 @@ function wireTenses(){
 
 /* ------------------------------ Translation --------------------------------- */
 sub.trLevel = sub.trLevel || null;
-sub.trMode = "vocab"; sub.flashIdx = 0; sub.transIdx = 0; sub.transCorrect = 0;
+sub.trMode = sub.trMode || "vocab"; sub.flashIdx = sub.flashIdx || 0;
+sub.transIdx = sub.transIdx || 0; sub.transCorrect = sub.transCorrect || 0;
 function renderTranslate(){
   if(!sub.trLevel){
     const level2Open = !!STATE.done.translate1;
-    return `<div class="hero"><h2>⇄ دفتر الترجمة</h2><p>مستويان متدرجان: أساسي ثم متقدم.</p></div>
-      <div class="notebook" onclick="sub.trLevel=1; sub.trMode=\'vocab\'; sub.flashIdx=0; render();">
-        <h3>المستوى الأول — تأسيسي</h3><p>مفردات يومية وجمل بسيطة: it is / there is / I have</p></div>
-      <div class="notebook" onclick="${level2Open?"sub.trLevel=2; sub.trMode=\'vocab\'; sub.flashIdx=0; render();":"nudge(\'أنهِ المستوى الأول أولًا حتى يفتح هذا المستوى\');"}">
-        <h3>${level2Open?"":"🔒 "}المستوى الثاني — متقدم</h3><p>المقارنة، والأفعال الناقصة، والضمائر، وحروف الجر</p></div>`;
+    return `<div class="hero"><h2>${t("vocab_title")}</h2><p>${t("level_intro")}</p></div>
+      <div class="notebook" onclick="sub.trLevel=1; sub.trMode='vocab'; sub.flashIdx=0; render();">
+        <h3>${t("level1_title")}</h3><p>${t("level1_desc")}</p></div>
+      <div class="notebook" onclick="${level2Open?"sub.trLevel=2; sub.trMode='vocab'; sub.flashIdx=0; render();":`nudge(${JSON.stringify(t("level1_first_note"))});`}">
+        <h3>${level2Open?"":t("locked_prefix")}${t("level2_title")}</h3><p>${t("level2_desc")}</p></div>`;
   }
   const level = sub.trLevel;
   const vocab = level===1 ? T1_VOCAB : T2_VOCAB;
   const sentences = level===1 ? T1_SENTENCES : T2_SENTENCES;
-  const title = level===1 ? "المستوى الأول" : "المستوى الثاني";
+  const title = level===1 ? t("level1_title") : t("level2_title");
   const progress = `<div class="progress-row">
-      <span class="pill ${sub.trMode==='vocab'?'active':''}">مفردات</span>
+      <span class="pill ${sub.trMode==='vocab'?'active':''}">${t("pill_vocab")}</span>
       <span>←</span>
-      <span class="pill ${sub.trMode==='sentences'?'active':''}">جمل ترجمة</span>
+      <span class="pill ${sub.trMode==='sentences'?'active':''}">${t("pill_sentences")}</span>
     </div>`;
   if(sub.trMode==="vocab"){
     if(sub.flashIdx >= vocab.length){
-      return `${subHeader(title)}${progress}<div class="done-banner"><h3>أنهيت كل البطاقات 🎉</h3></div>
-        <button class="btn" style="width:100%" onclick="sub.trMode='sentences'; render();">ابدأ جمل الترجمة</button>`;
+      return `${subHeader(title)}${progress}<div class="done-banner"><h3>${t("vocab_done")}</h3></div>
+        <button class="btn" style="width:100%" onclick="sub.trMode='sentences'; render();">${t("start_sentences")}</button>`;
     }
     const [en,ar] = vocab[sub.flashIdx];
-    return `${subHeader(title+' — بطاقة '+(sub.flashIdx+1)+' من '+vocab.length)}${progress}
-      <div class="flash" id="flashCard"><div class="en front">${en}</div><div class="hint" id="hintText">اضغط لرؤية المعنى</div></div>
-      <button class="btn" style="width:100%" id="flashNext">التالي</button>`;
+    return `${subHeader(title+' — '+t("card_word")+' '+(sub.flashIdx+1)+' '+t("of_word")+' '+vocab.length)}${progress}
+      <div class="flash" id="flashCard"><div class="en front">${en}</div><div class="hint" id="hintText">${t("flash_hint")}</div></div>
+      <button class="btn" style="width:100%" id="flashNext">${t("next_btn")}</button>`;
   }
   if(sub.transIdx >= sentences.length){
     STATE.done["translate"+level] = {done:true};
     if(level===1) STATE.done.translate = {done:true};
     saveState(STATE);
+    if(!sub.reported){ pushReport("vocab", title+" — "+t("pill_sentences"), sub.transCorrect, sentences.length); sub.reported = true; }
     return `${subHeader(title)}${progress}
-      <div class="done-banner"><h3>أنهيت هذا المستوى 🎉</h3><p>ترجمت <b class="en">${sub.transCorrect}</b> من <b class="en">${sentences.length}</b> جملة</p>
-      ${level===1?'<p style="margin-top:8px;font-size:14.5px;">فتحتَ الآن المستوى الثاني 🎉</p>':''}</div>
-      <button class="btn" style="width:100%" onclick="sub.trLevel=null; render();">${level===1?'انتقل للمستوى الثاني':'رجوع للدفتر'}</button>`;
+      <div class="done-banner"><h3>${t("level_done_title")}</h3><p>${t("translated_word")} <b class="en">${sub.transCorrect}</b> ${t("of_word")} <b class="en">${sentences.length}</b> ${t("sentence_word")}</p>
+      ${level===1?`<p style="margin-top:8px;font-size:14.5px;">${t("level2_unlocked_note")}</p>`:''}</div>
+      <button class="btn" style="width:100%;margin-bottom:10px;" onclick="shareSingle('${title} — ${t("pill_sentences")}', ${sub.transCorrect}, ${sentences.length});">${t("share_result_btn")}</button>
+      <button class="btn ghost" style="width:100%" onclick="sub.trLevel=null; render();">${level===1?t("go_level2"):t("back_to_notebook")}</button>`;
   }
   const s = sentences[sub.transIdx];
-  return `${subHeader(title+' — جملة '+(sub.transIdx+1)+' من '+sentences.length)}${progress}
+  return `${subHeader(title+' — '+(sub.transIdx+1)+' '+t("of_word")+' '+sentences.length)}${progress}
     <div class="card glass">
-      <p>ترجم الجملة التالية إلى العربية بأسلوبك:</p>
+      <p>${t("translate_prompt")}</p>
       <div class="q-text en">${s.en}</div>
-      <div class="type-row"><input class="type-input" id="ansBox" dir="rtl" placeholder="اكتب ترجمتك هنا"><button class="btn" id="checkBtn">تحقق</button></div>
+      <div class="type-row"><input class="type-input" id="ansBox" dir="rtl" placeholder="${t("translate_ph")}"><button class="btn" id="checkBtn">${t("check_btn")}</button></div>
       <div class="feedback" id="fbTrans"></div>
     </div>`;
 }
@@ -643,23 +1007,312 @@ function wireTranslate(){
     checkBtn.onclick=()=>{
       const fb = document.getElementById("fbTrans");
       fb.className="feedback show ok";
-      fb.innerHTML = `الترجمة المقترحة: <b>${s.ar}</b><br>قارن إجابتك بها — المهم أن يتطابق المعنى لا كل كلمة.`;
+      fb.innerHTML = `${t("suggested_translation")} <b>${s.ar}</b><br>${t("compare_note")}`;
       sub.transCorrect++; checkBtn.disabled = true;
       setTimeout(()=>{ sub.transIdx++; render(); }, 1600);
     };
   }
 }
+
+/* --------------------------------- Free tab ---------------------------------- */
+function renderFree(){
+  if(!sub.freeSkill){
+    const stage = STATE.stage;
+    return `<div class="hero"><h2>${t("free_title")}</h2><p>${t("free_sub")}</p></div>
+      ${FREE_SKILLS().map(s=>`
+        <div class="notebook" onclick="sub.freeSkill='${s.id}'; resetSkillState('${s.id}'); render();">
+          <h3>${s.icon} ${s.title}</h3><p>${s.desc}</p>
+          ${stage && s.recommendFor.includes(stage) ? `<span class="rec">${t("recommended_badge")}</span>` : ""}
+        </div>`).join("")}`;
+  }
+  const back = `<div class="subbar"><span class="t" style="cursor:pointer" onclick="sub.freeSkill=null; render();">${t("back_to_skills")}</span></div>`;
+  if(sub.freeSkill==="grammar") return back + renderTenses();
+  if(sub.freeSkill==="vocab") return back + renderTranslate();
+  if(sub.freeSkill==="reading") return back + renderReading();
+  if(sub.freeSkill==="listening") return back + renderListening();
+  if(sub.freeSkill==="phonics") return back + renderPhonics();
+  return back;
+}
+
+/* --------------------------------- Reading ------------------------------------ */
+function renderReading(){
+  if(sub.readIdx >= READING_PASSAGES.length){
+    if(!sub.reported){ pushReport("reading", t("skill_reading_title"), sub.readCorrect, sub.readTotal); sub.reported = true; }
+    return `<div class="hero"><h2>📖 ${t("skill_reading_title")}</h2></div>
+      <div class="done-banner"><h3>${t("reading_all_done")}</h3><p>${t("scored_word")} <b class="en">${sub.readCorrect}</b> ${t("out_of_word")} <b class="en">${sub.readTotal}</b></p></div>
+      <button class="btn" style="width:100%" onclick="shareSingle('${t("skill_reading_title")}', ${sub.readCorrect}, ${sub.readTotal});">${t("share_result_btn")}</button>`;
+  }
+  const p = READING_PASSAGES[sub.readIdx];
+  if(sub.readQIdx === -1){
+    return `<div class="hero"><h2>📖 ${p.title}</h2><p>${t("passage_word")} ${sub.readIdx+1} ${t("of_word")} ${READING_PASSAGES.length}</p></div>
+      <div class="card glass"><p class="en" style="font-size:17px;line-height:1.7;">${p.text}</p></div>
+      <button class="btn" style="width:100%" onclick="sub.readQIdx=0; render();">${t("reading_start_qs")}${p.qs.length})</button>`;
+  }
+  if(sub.readQIdx >= p.qs.length){
+    return `<div class="hero"><h2>📖 ${p.title}</h2></div>
+      <div class="done-banner"><h3>${t("passage_done")}</h3></div>
+      <button class="btn" style="width:100%" onclick="sub.readIdx++; sub.readQIdx=-1; render();">${t("next_passage")}</button>`;
+  }
+  const q = p.qs[sub.readQIdx];
+  return `${subHeader(t("q_word")+' '+(sub.readQIdx+1)+' '+t("of_word")+' '+p.qs.length)}
+    <div class="card glass">
+      <div class="q-text en">${q.q}</div>
+      <div class="choices" id="readChoices">${q.opts.map((o,i)=>`<button class="choice en" data-i="${i}">${o}</button>`).join("")}</div>
+      <div class="feedback" id="fbRead"></div>
+    </div>`;
+}
+function wireReading(){
+  const choices = document.getElementById("readChoices");
+  if(!choices) return;
+  const p = READING_PASSAGES[sub.readIdx]; const q = p.qs[sub.readQIdx];
+  const btns = [...choices.querySelectorAll(".choice")];
+  btns.forEach(b=>b.onclick=()=>{
+    btns.forEach(x=>x.disabled=true);
+    const i = +b.dataset.i; const fb = document.getElementById("fbRead");
+    sub.readTotal++;
+    if(i===q.a){ b.classList.add("correct"); sub.readCorrect++; fb.className="feedback show ok"; }
+    else { b.classList.add("wrong"); btns[q.a].classList.add("correct"); fb.className="feedback show bad"; }
+    fb.textContent = q.why; fb.classList.add("show");
+    setTimeout(()=>{ sub.readQIdx++; render(); }, 1700);
+  });
+}
+
+/* --------------------------------- Listening ----------------------------------- */
+function renderListening(){
+  if(sub.listenIdx >= LISTEN_ITEMS.length){
+    if(!sub.reported){ pushReport("listening", t("skill_listening_title"), sub.listenCorrect, LISTEN_ITEMS.length); sub.reported = true; }
+    return `<div class="hero"><h2>🎧 ${t("skill_listening_title")}</h2></div>
+      <div class="done-banner"><h3>${t("listen_done")}</h3><p>${t("scored_word")} <b class="en">${sub.listenCorrect}</b> ${t("out_of_word")} <b class="en">${LISTEN_ITEMS.length}</b></p></div>
+      <button class="btn" style="width:100%" onclick="shareSingle('${t("skill_listening_title")}', ${sub.listenCorrect}, ${LISTEN_ITEMS.length});">${t("share_result_btn")}</button>`;
+  }
+  const item = LISTEN_ITEMS[sub.listenIdx];
+  return `${subHeader(t("listen_q_word")+' '+(sub.listenIdx+1)+' '+t("of_word")+' '+LISTEN_ITEMS.length)}
+    <button class="speak-btn" id="speakBtn">${t("listen_btn")}</button>
+    <div class="replay" id="replayBtn">${t("replay_btn")}</div>
+    <div class="card glass">
+      <p style="margin-bottom:10px;">${t("choose_meaning")}</p>
+      <div class="choices ar" id="listenChoices">${item.opts.map((o,i)=>`<button class="choice ar" data-i="${i}">${o}</button>`).join("")}</div>
+      <div class="feedback" id="fbListen"></div>
+    </div>
+    <p id="noSpeechNote" style="display:none;color:var(--ink-faint);font-size:13.5px;text-align:center;margin-top:6px;">
+      ${t("no_speech_note")} <span class="en">${item.en}</span></p>`;
+}
+function wireListening(){
+  const item = LISTEN_ITEMS[sub.listenIdx];
+  const speakBtn = document.getElementById("speakBtn");
+  const replayBtn = document.getElementById("replayBtn");
+  const doSpeak = ()=>{ const ok = speak(item.en); if(!ok) document.getElementById("noSpeechNote").style.display="block"; };
+  if(speakBtn) speakBtn.onclick = doSpeak;
+  if(replayBtn) replayBtn.onclick = doSpeak;
+  setTimeout(doSpeak, 300);
+  const choices = document.getElementById("listenChoices");
+  if(!choices) return;
+  const btns = [...choices.querySelectorAll(".choice")];
+  btns.forEach(b=>b.onclick=()=>{
+    btns.forEach(x=>x.disabled=true);
+    const i = +b.dataset.i; const fb = document.getElementById("fbListen");
+    if(i===item.a){ b.classList.add("correct"); sub.listenCorrect++; fb.className="feedback show ok"; fb.textContent=t("correct_fb"); }
+    else { b.classList.add("wrong"); btns[item.a].classList.add("correct"); fb.className="feedback show bad"; fb.textContent=t("incorrect_fb"); }
+    fb.classList.add("show");
+    setTimeout(()=>{ sub.listenIdx++; render(); }, 1500);
+  });
+}
+
+/* ---------------------------------- Phonics ------------------------------------- */
+function renderPhonics(){
+  if(sub.phonIdx >= PHONICS_SETS.length){
+    if(!sub.reported){ pushReport("phonics", t("skill_phonics_title"), sub.phonCorrect, sub.phonTotal); sub.reported = true; }
+    return `<div class="hero"><h2>🔤 ${t("skill_phonics_title")}</h2></div>
+      <div class="done-banner"><h3>${t("phonics_all_done")}</h3><p>${t("scored_word")} <b class="en">${sub.phonCorrect}</b> ${t("out_of_word")} <b class="en">${sub.phonTotal}</b></p></div>
+      <button class="btn" style="width:100%" onclick="shareSingle('${t("skill_phonics_title")}', ${sub.phonCorrect}, ${sub.phonTotal});">${t("share_result_btn")}</button>`;
+  }
+  const set = PHONICS_SETS[sub.phonIdx];
+  if(sub.phonMode==="cards"){
+    if(sub.flashIdx >= set.words.length){
+      return `<div class="hero"><h2>🔤 ${t("phonics_family")} <span class="en">-${set.family}</span></h2><p>${t("set_word")} ${sub.phonIdx+1} ${t("of_word")} ${PHONICS_SETS.length}</p></div>
+        <div class="done-banner"><h3>${t("phonics_cards_done")}</h3></div>
+        <button class="btn" style="width:100%" onclick="sub.phonMode='quiz'; render();">${t("start_listen_quiz")}</button>`;
+    }
+    const [en,ar] = set.words[sub.flashIdx];
+    return `<div class="hero"><h2>🔤 ${t("phonics_family")} <span class="en">-${set.family}</span></h2><p>${t("card_word")} ${sub.flashIdx+1} ${t("of_word")} ${set.words.length}</p></div>
+      <div class="flash" id="flashCard"><div class="en front">${en}</div><div class="hint" id="hintText">${t("flash_hint2")}</div></div>
+      <button class="btn" style="width:100%" id="flashNext">${t("next_btn")}</button>`;
+  }
+  const targetIdx = sub.phonIdx % set.words.length;
+  return `${subHeader(t("phonics_quiz_header")+' -'+set.family)}
+    <button class="speak-btn" id="speakBtn">${t("listen_word_btn")}</button>
+    <div class="replay" id="replayBtn">${t("replay_btn")}</div>
+    <div class="card glass">
+      <div class="choices" id="phonChoices">${set.words.map((w,i)=>`<button class="choice en" data-i="${i}">${w[0]}</button>`).join("")}</div>
+      <div class="feedback" id="fbPhon"></div>
+    </div>`;
+}
+function wirePhonics(){
+  const set = PHONICS_SETS[sub.phonIdx];
+  const flashCard = document.getElementById("flashCard");
+  if(flashCard){
+    const [,ar] = set.words[sub.flashIdx];
+    let shown=false;
+    flashCard.onclick=()=>{
+      if(shown) return; shown=true;
+      document.getElementById("hintText").outerHTML = `<div style="font-weight:700;color:var(--glow)">${ar}</div>`;
+      speak(set.words[sub.flashIdx][0]);
+    };
+    const nextBtn = document.getElementById("flashNext");
+    if(nextBtn) nextBtn.onclick=()=>{ sub.flashIdx++; render(); };
+    return;
+  }
+  const targetIdx = sub.phonIdx % set.words.length;
+  const target = set.words[targetIdx];
+  const speakBtn = document.getElementById("speakBtn");
+  const replayBtn = document.getElementById("replayBtn");
+  const doSpeak = ()=>speak(target[0]);
+  if(speakBtn) speakBtn.onclick = doSpeak;
+  if(replayBtn) replayBtn.onclick = doSpeak;
+  setTimeout(doSpeak, 300);
+  const choices = document.getElementById("phonChoices");
+  if(!choices) return;
+  const btns = [...choices.querySelectorAll(".choice")];
+  btns.forEach(b=>b.onclick=()=>{
+    btns.forEach(x=>x.disabled=true);
+    const i = +b.dataset.i; const fb = document.getElementById("fbPhon");
+    sub.phonTotal++;
+    if(i===targetIdx){ b.classList.add("correct"); sub.phonCorrect++; fb.className="feedback show ok"; fb.textContent=t("correct_fb"); }
+    else { b.classList.add("wrong"); btns[targetIdx].classList.add("correct"); fb.className="feedback show bad"; fb.textContent=t("incorrect_fb"); }
+    fb.classList.add("show");
+    setTimeout(()=>{ sub.phonIdx++; sub.phonMode="cards"; sub.flashIdx=0; render(); }, 1500);
+  });
+}
+
+/* --------------------------------- Report tab ----------------------------------- */
+function shareSingle(title, score, total){
+  const phone = (STATE.teacherWhatsapp||"").replace(/\D/g,"");
+  if(!phone){ nudge(t("wa_first_single")); return; }
+  const name = STATE.studentName || t("student_word");
+  const text = `${t("wa_result_title")}\n${t("student_word")}: ${name}\n${title}: ${score}/${total}`;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, "_blank");
+}
+function shareFullReport(){
+  const phone = (STATE.teacherWhatsapp||"").replace(/\D/g,"");
+  if(!phone){ nudge(t("wa_first_report")); return; }
+  if(!STATE.reports.length){ nudge(t("no_activity")); return; }
+  const name = STATE.studentName || t("student_word");
+  let total=0, got=0;
+  STATE.reports.forEach(r=>{ total+=r.total; got+=r.score; });
+  const pct = total ? Math.round(got/total*100) : 0;
+  const lines = [
+    `${t("wa_report_title")} ${name}`,
+    `English StudyMate`,
+    ``,
+    ...STATE.reports.map(r=>`• ${r.title}: ${r.score}/${r.total} — ${r.date}`),
+    ``,
+    `${t("total_word")}: ${got}/${total} (${pct}%)`
+  ];
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(lines.join("\n"))}`, "_blank");
+}
+function renderReportTab(){
+  let total=0, got=0;
+  STATE.reports.forEach(r=>{ total+=r.total; got+=r.score; });
+  const pct = total ? Math.round(got/total*100) : 0;
+  return `<div class="hero"><h2>${t("report_title")}</h2><p>${t("report_sub")}</p></div>
+    <label class="field-label">${t("wa_label")}</label>
+    <div class="field-row"><input class="field-input en" id="waInput" placeholder="${t("wa_ph")}" value="${STATE.teacherWhatsapp||''}"></div>
+    ${total ? `<div class="card glass total-card"><div class="big en">${got}/${total}</div><p>${t("total_word")} (${pct}%)</p></div>` : ""}
+    ${STATE.reports.length ? STATE.reports.slice().reverse().map(r=>`
+      <div class="report-row"><div><div class="rt">${r.title}</div><div class="rd">${r.date}</div></div><div class="rs en">${r.score}/${r.total}</div></div>
+    `).join("") : `<div class="card"><p>${t("empty_report")}</p></div>`}
+    <button class="btn" style="width:100%;margin-top:10px;" id="shareAllBtn">${t("share_all_btn")}</button>`;
+}
+function wireReportTab(){
+  const waInput = document.getElementById("waInput");
+  if(waInput) waInput.onchange = ()=>{ STATE.teacherWhatsapp = waInput.value.replace(/\D/g,""); saveState(STATE); };
+  const shareAllBtn = document.getElementById("shareAllBtn");
+  if(shareAllBtn) shareAllBtn.onclick = shareFullReport;
+}
+
+/* --------------------------------- Settings ----------------------------------- */
+function renderSettings(){
+  const lang = STATE.lang||"ar";
+  const theme = STATE.theme||"dark";
+  return `<div class="subbar"><span class="t" style="cursor:pointer" onclick="closeSettings()">${t("back_word")}</span></div>
+    <div class="hero"><h2>${t("settings_title")}</h2></div>
+    <label class="field-label">${t("settings_lang_label")}</label>
+    <div class="pill-row">
+      <span class="pill ${lang==='ar'?'active':''}" onclick="setLang('ar')">العربية</span>
+      <span class="pill ${lang==='en'?'active':''}" onclick="setLang('en')">English</span>
+    </div>
+    <label class="field-label">${t("settings_theme_label")}</label>
+    <div class="pill-row">
+      ${THEMES.map(id=>`<span class="pill ${theme===id?'active':''}" data-theme-id="${id}">${THEME_ICON[id]} ${t("theme_"+id)}</span>`).join("")}
+    </div>
+    <div class="card" style="margin-top:6px;">
+      <h3>${t("settings_credits_title")}</h3>
+      <p>ARAFAT ALRAJHI © 2026</p>
+      <p>${t("settings_credits_line2")}</p>
+    </div>`;
+}
+function wireSettings(){
+  const pills = document.querySelectorAll("[data-theme-id]");
+  pills.forEach(p=>p.onclick=()=>{ applyTheme(p.dataset.themeId); render(); });
+}
+
+/* --------------------------------- Wiring dispatch -------------------------------- */
 function wireEvents(){
-  if(currentTab==="letters") wireLetters();
-  if(currentTab==="tenses") wireTenses();
-  if(currentTab==="translate") wireTranslate();
+  if(currentTab==="home") wireHome();
+  if(currentTab==="foundation"){
+    if(foundSub==="letters") wireLetters();
+    if(foundSub==="tenses") wireTenses();
+    if(foundSub==="translate") wireTranslate();
+  }
+  if(currentTab==="free" && sub.freeSkill){
+    if(sub.freeSkill==="grammar") wireTenses();
+    if(sub.freeSkill==="vocab") wireTranslate();
+    if(sub.freeSkill==="reading") wireReading();
+    if(sub.freeSkill==="listening") wireListening();
+    if(sub.freeSkill==="phonics") wirePhonics();
+  }
+  if(currentTab==="report") wireReportTab();
+  if(currentTab==="settings") wireSettings();
 }
 
 /* --------------------------------- Boot ------------------------------------ */
+applyLangDom();
 renderTabbar();
-setAccent(currentTab);
+setAccent();
 updateThemeBtn();
-render();
+const urlTask = new URLSearchParams(location.search).get("task");
+if(urlTask){ applyCode(urlTask); } else { render(); }
+
+/* --------------------------- Install & update banners --------------------------- */
+function showActionBanner(text, btnLabel, onAction, dismissLabel){
+  const old = document.getElementById("actionBanner"); if(old) old.remove();
+  const el = document.createElement("div");
+  el.id = "actionBanner"; el.className = "action-banner";
+  el.innerHTML = `<span class="txt">${text}</span>
+    <button class="btn" id="actionBannerBtn">${btnLabel}</button>
+    ${dismissLabel ? `<button class="x" id="actionBannerX" aria-label="${dismissLabel}">×</button>` : ""}`;
+  document.body.appendChild(el);
+  document.getElementById("actionBannerBtn").onclick = onAction;
+  const x = document.getElementById("actionBannerX");
+  if(x) x.onclick = ()=> el.remove();
+}
+
+let deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", (e)=>{
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  showActionBanner(t("install_title"), t("install_btn"), async ()=>{
+    if(!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    const b = document.getElementById("actionBanner"); if(b) b.remove();
+  }, t("install_dismiss"));
+});
+window.addEventListener("appinstalled", ()=>{
+  const b = document.getElementById("actionBanner"); if(b) b.remove();
+  deferredInstallPrompt = null;
+});
 
 if("serviceWorker" in navigator && location.protocol.startsWith("http")){
   window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(()=>{}); });
