@@ -33,12 +33,12 @@
   --ok:#2DD4BF; --ok-soft:rgba(45,212,191,.14);
   --bad:#FF7A7A; --bad-soft:rgba(255,122,122,.14);
 
-  --c-letters:#E3A548; --c-letters-tint:rgba(227,165,72,.16);
-  --c-tenses:#6FB3E6;  --c-tenses-tint:rgba(111,179,230,.16);
-  --c-translate:#B58FE0; --c-translate-tint:rgba(181,143,224,.16);
-  --c-home:#4FBF95; --c-home-tint:rgba(79,191,149,.16);
-  --c-free:#E07A93; --c-free-tint:rgba(224,122,147,.16);
-  --c-report:#4FBF95; --c-report-tint:rgba(79,191,149,.16);
+  --c-letters:#FFB020; --c-letters-tint:rgba(255,176,32,.18);
+  --c-tenses:#33B5FF;  --c-tenses-tint:rgba(51,181,255,.18);
+  --c-translate:#C57BFF; --c-translate-tint:rgba(197,123,255,.18);
+  --c-home:#2FE0B0; --c-home-tint:rgba(47,224,176,.18);
+  --c-free:#FF5C8A; --c-free-tint:rgba(255,92,138,.18);
+  --c-report:#2FE0B0; --c-report-tint:rgba(47,224,176,.18);
 
   --glow:var(--c-home); --glow-tint:var(--c-home-tint);
   --btn-bg:color-mix(in srgb, var(--glow) 18%, transparent);
@@ -64,29 +64,29 @@
 }
 /* الوضع الكحلي المضيء */
 :root[data-theme="navy"]{
-    --void:#0A1130; --lift1:#141B3D; --lift2:#0F1530;
-    --ink:#DCE6FA; --ink-soft:#8FA3D6; --ink-faint:#5A6BA0;
-    --glass:linear-gradient(158deg, rgba(140,180,255,.11), rgba(140,180,255,.03));
-    --glass-line:rgba(140,180,255,.18);
-    --glass-shadow:0 18px 46px rgba(20,40,120,.55);
-    --edge:rgba(170,205,255,.45);
-    --flat:rgba(140,180,255,.055); --flat-line:rgba(140,180,255,.11); --line:rgba(140,180,255,.13);
-    --solid:#141B3D;
-    --ok:#3ED6C4; --ok-soft:rgba(62,214,196,.16);
-    --bad:#FF7F93; --bad-soft:rgba(255,127,147,.16);
+    --void:#0A1130; --lift1:#161F45; --lift2:#101838;
+    --ink:#F0F5FF; --ink-soft:#A9C0F0; --ink-faint:#6E86C4;
+    --glass:linear-gradient(158deg, rgba(120,190,255,.18), rgba(120,190,255,.05));
+    --glass-line:rgba(140,200,255,.3);
+    --glass-shadow:0 18px 46px rgba(20,60,180,.5), 0 0 40px rgba(80,160,255,.12);
+    --edge:rgba(180,220,255,.7);
+    --flat:rgba(140,190,255,.08); --flat-line:rgba(140,190,255,.16); --line:rgba(140,190,255,.18);
+    --solid:#161F45;
+    --ok:#3EF0D6; --ok-soft:rgba(62,240,214,.18);
+    --bad:#FF7F93; --bad-soft:rgba(255,127,147,.18);
 }
 /* الوضع الكهرماني */
 :root[data-theme="amber"]{
-    --void:#1A130A; --lift1:#241B0F; --lift2:#1F160C;
-    --ink:#F0E4CE; --ink-soft:#C2A87E; --ink-faint:#8A7350;
-    --glass:linear-gradient(158deg, rgba(255,190,100,.11), rgba(255,190,100,.03));
-    --glass-line:rgba(255,190,100,.2);
-    --glass-shadow:0 18px 46px rgba(80,50,10,.5);
-    --edge:rgba(255,212,145,.45);
-    --flat:rgba(255,190,100,.055); --flat-line:rgba(255,190,100,.11); --line:rgba(255,190,100,.13);
-    --solid:#241B0F;
-    --ok:#8FD65A; --ok-soft:rgba(143,214,90,.16);
-    --bad:#FF7A6E; --bad-soft:rgba(255,122,110,.16);
+    --void:#1A130A; --lift1:#2C2110; --lift2:#22190D;
+    --ink:#FFF6E8; --ink-soft:#E0BE8C; --ink-faint:#A78960;
+    --glass:linear-gradient(158deg, rgba(255,200,110,.2), rgba(255,200,110,.06));
+    --glass-line:rgba(255,205,120,.32);
+    --glass-shadow:0 18px 46px rgba(90,55,10,.55), 0 0 40px rgba(255,180,80,.12);
+    --edge:rgba(255,222,160,.75);
+    --flat:rgba(255,195,110,.08); --flat-line:rgba(255,195,110,.16); --line:rgba(255,195,110,.18);
+    --solid:#2C2110;
+    --ok:#A8F065; --ok-soft:rgba(168,240,101,.18);
+    --bad:#FF8A6E; --bad-soft:rgba(255,138,110,.18);
 }
 *{box-sizing:border-box; margin:0; padding:0;}
 html,body{height:100%;}
@@ -265,6 +265,10 @@ body[data-lang="en"] .notebook{ text-align:left; }
 .total-card .big{ font-family:"Space Mono",monospace; font-size:34px; font-weight:700; color:var(--glow); }
 
 .footer-credit{ text-align:center; font-size:13px; color:var(--ink-faint); margin-top:26px; line-height:1.8; }
+.gate-wrap{ min-height:66vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:14px; padding:10px 6px; }
+.gate-input{ font-size:32px; letter-spacing:16px; text-align:center; width:100%; max-width:220px; padding:16px 0 16px 16px;
+  border-radius:16px; border:1px solid var(--flat-line); background:var(--flat); color:var(--ink); font-family:"Space Mono",monospace; }
+.gate-error{ color:var(--bad); font-size:14px; min-height:18px; }
 [hidden]{ display:none !important; }
 </style>
 </head>
@@ -319,9 +323,12 @@ const STR = {
     home_footer:"بالتعاون مع المعلم الفاضل الأستاذ حسام عبدالله في المنهجية التدريسية",
     settings_title:"⚙ الإعدادات", settings_lang_label:"لغة الواجهة", settings_theme_label:"الألوان",
     theme_dark:"الليلي", theme_light:"النهاري", theme_navy:"الكحلي المضيء", theme_amber:"الكهرماني",
-    settings_credits_title:"الحقوق", settings_credits_line2:"بالتعاون مع المعلم الفاضل الأستاذ حسام عبدالله في المنهجية التدريسية",
+    settings_credits_title:"الحقوق",
     back_word:"← رجوع",
     install_title:"ثبّت رفيق الإنجليزية على جهازك", install_btn:"تثبيت الآن", install_dismiss:"لاحقًا",
+    gate_title:"🔐 الوصول بدعوة من معلمك", gate_sub:"أدخل كود التفعيل المكوّن من ٤ أرقام الذي يزوّدك به معلمك للانضمام إلى دفعته",
+    gate_ph:"••••", gate_btn:"تفعيل", gate_error:"كود غير صحيح — تواصل مع معلمك للحصول على كود صالح",
+    gate_batch_label:"الدفعة:",
     unknown_code:"كود غير معروف — تأكد منه مع معلمك", code_unlocked:"تم فتح المهمة ✅",
 
     letters_title:"✎ دفتر الحروف", letters_sub:"تأسيس القراءة والكتابة لمن يبدأ من الصفر.",
@@ -393,9 +400,12 @@ const STR = {
     home_footer:"In collaboration with the esteemed teacher, Mr. Hossam Abdalla, on teaching methodology",
     settings_title:"⚙ Settings", settings_lang_label:"Interface language", settings_theme_label:"Theme",
     theme_dark:"Night", theme_light:"Day", theme_navy:"Deep Navy", theme_amber:"Amber",
-    settings_credits_title:"Rights", settings_credits_line2:"In collaboration with the esteemed teacher, Mr. Hossam Abdalla, on teaching methodology",
+    settings_credits_title:"Rights",
     back_word:"← Back",
     install_title:"Install English StudyMate on your device", install_btn:"Install now", install_dismiss:"Later",
+    gate_title:"🔐 Access by your teacher's invitation", gate_sub:"Enter the 4-digit activation code your teacher gave you to join their group",
+    gate_ph:"••••", gate_btn:"Activate", gate_error:"Incorrect code — contact your teacher for a valid code",
+    gate_batch_label:"Group:",
     unknown_code:"Unknown code — check it with your teacher", code_unlocked:"Task unlocked ✅",
 
     letters_title:"✎ Letters Notebook", letters_sub:"Building reading and writing from zero.",
@@ -456,6 +466,8 @@ const STR = {
   }
 };
 function t(key){ const l = STATE.lang||"ar"; return (STR[l] && STR[l][key]!==undefined) ? STR[l][key] : STR.ar[key]; }
+// سطر الحقوق ثابت بالإنجليزية دائمًا، بغض النظر عن لغة الواجهة المختارة.
+const CREDITS_TEXT = "© 2026 All rights reserved — a collaboration between the esteemed teacher, Mr. Hossam Abdalla, and Arafat Alrajhi";
 function applyLangDom(){
   const l = STATE.lang||"ar";
   document.documentElement.setAttribute("lang", l==="en"?"en":"ar");
@@ -660,6 +672,15 @@ const CODES = {
   READING:{tab:"free", skill:"reading"}, LISTEN:{tab:"free", skill:"listening"},
   PHONICS:{tab:"free", skill:"phonics"}, START:{tab:"foundation"}
 };
+/* أكواد تفعيل الدخول — كل كود مربوط بدفعة/مجموعة، حتى تعرف من أي دفعة انضمّ كل طالب.
+   إضافة دفعة جديدة = سطر واحد هنا فقط، بلا أي تعديل آخر. */
+const ACTIVATION_CODES = [
+  {code:"2026", label:"الدفعة العامة"},
+  {code:"1001", label:"دفعة الأستاذ حسام"},
+  {code:"1002", label:"الدفعة الصباحية"},
+  {code:"1003", label:"الدفعة المسائية"},
+  {code:"9999", label:"دفعة تجريبية"}
+];
 
 let currentTab = STATE.lastTab || "home";
 let foundSub = STATE.foundSub || "letters";
@@ -735,12 +756,46 @@ function switchFound(id){
 }
 function render(){
   const inner = document.getElementById("inner");
+  if(!STATE.activated){ inner.innerHTML = renderGate(); wireGate(); return; }
   if(currentTab==="home") inner.innerHTML = renderHome();
   else if(currentTab==="foundation") inner.innerHTML = renderFoundSubbar() + renderFoundContent();
   else if(currentTab==="free") inner.innerHTML = renderFree();
   else if(currentTab==="report") inner.innerHTML = renderReportTab();
   else if(currentTab==="settings") inner.innerHTML = renderSettings();
   wireEvents();
+}
+function renderGate(){
+  return `<div class="gate-wrap">
+    <div style="font-size:44px;">🔐</div>
+    <h2 style="font-family:var(--display);font-size:22px;font-weight:700;">${t("gate_title")}</h2>
+    <p style="color:var(--ink-soft);font-size:15px;max-width:320px;">${t("gate_sub")}</p>
+    <input class="gate-input en" id="gateInput" inputmode="numeric" maxlength="4" placeholder="${t("gate_ph")}">
+    <div class="gate-error" id="gateError"></div>
+    <button class="btn" id="gateBtn" style="max-width:220px;">${t("gate_btn")}</button>
+  </div>`;
+}
+function wireGate(){
+  const input = document.getElementById("gateInput");
+  const btn = document.getElementById("gateBtn");
+  const err = document.getElementById("gateError");
+  if(!input) return;
+  input.focus();
+  const tryActivate = ()=>{
+    const val = input.value.trim();
+    const match = ACTIVATION_CODES.find(c=>c.code===val);
+    if(match){
+      STATE.activated = true; STATE.activationBatch = match.label; saveState(STATE);
+      renderTabbar(); setAccent();
+      const urlTask = new URLSearchParams(location.search).get("task");
+      if(urlTask){ applyCode(urlTask); } else { render(); }
+    } else {
+      err.textContent = t("gate_error");
+      input.value = ""; input.focus();
+    }
+  };
+  btn.onclick = tryActivate;
+  input.oninput = ()=>{ input.value = input.value.replace(/\D/g,"").slice(0,4); if(input.value.length===4) tryActivate(); };
+  input.addEventListener("keydown", (e)=>{ if(e.key==="Enter") tryActivate(); });
 }
 function subHeader(title){ return `<div class="subbar"><span class="t">${title}</span></div>`; }
 
@@ -762,7 +817,7 @@ function renderHome(){
     <div class="field-row"><input class="field-input en" id="codeInput" placeholder="${t("home_code_ph")}"><button class="field-btn" id="codeBtn">${t("enter_btn")}</button></div>
     <div class="notebook" onclick="switchTab('foundation')"><h3>${t("home_card1_title")}</h3><p>${t("home_card1_desc")}</p></div>
     <div class="notebook" onclick="switchTab('free')"><h3>${t("home_card2_title")}</h3><p>${t("home_card2_desc")}</p></div>
-    <div class="footer-credit">${t("settings_credits_line2")}<br>ARAFAT ALRAJHI © 2026</div>`;
+    <div class="footer-credit">${CREDITS_TEXT}</div>`;
 }
 function wireHome(){
   const nameInput = document.getElementById("nameInput");
@@ -1203,11 +1258,12 @@ function shareFullReport(){
   const lines = [
     `${t("wa_report_title")} ${name}`,
     `English StudyMate`,
+    STATE.activationBatch ? `${t("gate_batch_label")} ${STATE.activationBatch}` : null,
     ``,
     ...STATE.reports.map(r=>`• ${r.title}: ${r.score}/${r.total} — ${r.date}`),
     ``,
     `${t("total_word")}: ${got}/${total} (${pct}%)`
-  ];
+  ].filter(l=>l!==null);
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(lines.join("\n"))}`, "_blank");
 }
 function renderReportTab(){
@@ -1247,8 +1303,8 @@ function renderSettings(){
     </div>
     <div class="card" style="margin-top:6px;">
       <h3>${t("settings_credits_title")}</h3>
-      <p>ARAFAT ALRAJHI © 2026</p>
-      <p>${t("settings_credits_line2")}</p>
+      <p>${CREDITS_TEXT}</p>
+      ${STATE.activationBatch ? `<p style="margin-top:8px;color:var(--ink-faint);font-size:13.5px;">${t("gate_batch_label")} ${STATE.activationBatch}</p>` : ""}
     </div>`;
 }
 function wireSettings(){
@@ -1277,11 +1333,15 @@ function wireEvents(){
 
 /* --------------------------------- Boot ------------------------------------ */
 applyLangDom();
-renderTabbar();
-setAccent();
 updateThemeBtn();
-const urlTask = new URLSearchParams(location.search).get("task");
-if(urlTask){ applyCode(urlTask); } else { render(); }
+if(STATE.activated){
+  renderTabbar();
+  setAccent();
+  const urlTask = new URLSearchParams(location.search).get("task");
+  if(urlTask){ applyCode(urlTask); } else { render(); }
+} else {
+  render();
+}
 
 /* --------------------------- Install & update banners --------------------------- */
 function showActionBanner(text, btnLabel, onAction, dismissLabel){
